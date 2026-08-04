@@ -10,7 +10,8 @@ requirements = python3,kivy==2.3.1,kivymd==1.1.1
 
 orientation = portrait
 fullscreen = 0
-icon.filename = %(source.dir)s/icon.png
+icon.filename = data/icon.png
+presplash.filename = data/presplash.png
 
 # Android
 android.api = 34
@@ -25,3 +26,5 @@ android.permissions = VIBRATE,WAKE_LOCK,POST_NOTIFICATIONS
 [buildozer]
 log_level = 2
 warn_on_root = 1
+icon.filename = data/icon.png 
+presplash.filename = data/presplash.png 
