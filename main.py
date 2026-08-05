@@ -2,12 +2,21 @@
 # main.py - نسخه نهایی با سیستم اعتبارسنجی - آماده برای اندروید و ویندوز
 # ==================================================
 #
-# برای ساخت APK با Buildozer این وابستگی‌ها را در buildozer.spec قرار دهید:
+# برای ساخت APK با Buildozer این موارد را در buildozer.spec قرار دهید:
 # requirements = python3,kivy,plyer,jdatetime,arabic-reshaper,python-bidi,pyjnius,android
 # android.permissions = VIBRATE,POST_NOTIFICATIONS,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
 # orientation = portrait
 # android.api = 33 (یا بالاتر)
 # android.minapi = 21
+#
+# آیکون و تصویر شروع (هر دو باید در پوشه data کنار main.py باشند):
+# icon.filename = %(source.dir)s/data/icon.png
+# presplash.filename = %(source.dir)s/data/presplash.png
+# android.presplash_color = #FFFFFF
+#
+# فونت‌ها (Vazirmatn و ...):
+# source.include_exts = py,png,jpg,kv,atlas,ttf,json
+# source.include_patterns = fonts/*,data/*
 #
 # ==================================================
 
@@ -61,7 +70,7 @@ APP_INFO = {
     'email': 'homo00021@gmail.com',
     'telegram': '@your_id',
     'bale': '@Hosein_morady',
-    'note': 'در صورت بروز مشکل یا پیشنهاد با من درارتباط باشید',
+    'note': 'در صورت نیاز یا پیشنهاد با من در ارتباط باشید',
 }
 
 # رمز تأیید برنامه (ثابت)
@@ -106,21 +115,21 @@ THEMES = {
     'light': {
         # پس‌زمینه ملایم آبی-خاکستری برای کنتراست بهتر با کارت سفید
         'window_bg': '#E8EDF5',
-        'header_title': (0.12, 0.16, 0.28, 1),
+        'header_title': (0.06, 0.08, 0.14, 1),
         'card_bg': (1.0, 1.0, 1.0, 1),
         'card_bg_done': (0.94, 0.95, 0.96, 1),
         'card_bg_today': (1.0, 0.96, 0.88, 1),
         'card_bg_overdue': (1.0, 0.93, 0.91, 1),
         # متن اصلی تیره برای خوانایی بالا
-        'title_color': (0.10, 0.12, 0.18, 1),
+        'title_color': (0.05, 0.06, 0.10, 1),
         'title_color_done': (0.48, 0.50, 0.54, 1),
-        'desc_color': (0.28, 0.32, 0.38, 1),
+        'desc_color': (0.15, 0.18, 0.22, 1),
         'desc_color_done': (0.55, 0.57, 0.60, 1),
-        'info_color': (0.35, 0.40, 0.48, 1),
+        'info_color': (0.22, 0.26, 0.32, 1),
         'empty_color': (0.42, 0.46, 0.52, 1),
-        'search_hint': (0.50, 0.54, 0.60, 1),
+        'search_hint': (0.40, 0.44, 0.50, 1),
         'input_bg': (1, 1, 1, 1),
-        'input_fg': (0.08, 0.10, 0.14, 1),
+        'input_fg': (0.0, 0.0, 0.0, 1),  # مشکی پررنگ
         'popup_bg': (0.14, 0.16, 0.22, 1),
         'popup_title': (1, 1, 1, 1),
         'alert_bg': (0.12, 0.14, 0.10, 1),
@@ -191,7 +200,7 @@ _REGULAR_CANDIDATES = [
     os.path.join(_FONTS_DIR, 'Vazirmatn-Regular.ttf'),
     os.path.join(_FONTS_DIR, 'Vazirmatn-Medium.ttf'),
     os.path.join(_FONTS_DIR, 'Vazirmatn.ttf'),
-    os.path.join(_FONTS_DIR, 'Vazirmatn-Thin.ttf'),  # آخرین انتخاب
+    os.path.join(_FONTS_DIR, 'Vazirmatn-Thin.ttf'),
     os.path.join(_BASE_DIR, 'fonts', 'Vazirmatn-Regular.ttf'),
     os.path.join(_BASE_DIR, 'fonts', 'Vazirmatn-Medium.ttf'),
     os.path.join(_BASE_DIR, 'fonts', 'Vazirmatn-Thin.ttf'),
@@ -357,6 +366,79 @@ TRANSLATIONS = {
         'expired': '❌ زمان استفاده به پایان رسیده\nبرای ادامه با سازنده تماس بگیرید',
         'exit': 'خروج',
         'contact_info': 'برای دریافت کد تمدید با ما تماس بگیرید',
+        'categories': 'دسته‌بندی‌ها',
+        'category': 'دسته‌بندی',
+        'category_label': 'دسته‌بندی:',
+        'add_category': 'افزودن دسته‌بندی',
+        'enter_category_name': 'نام دسته جدید را وارد کنید',
+        'category_hint': 'مثال: ورزش، خانواده، ...',
+        'category_exists': 'این دسته از قبل وجود دارد',
+        'category_added': 'دسته «{}» اضافه شد',
+        'enter_category': 'نام دسته را وارد کنید',
+        'select_category': 'دسته را انتخاب کنید',
+        'select_repeat': 'نوع تکرار را انتخاب کنید',
+        'repeat_title': 'تکرار یادآوری',
+        'end_date_title': 'تاریخ پایان تکرار',
+        'end_date_placeholder': 'تاریخ پایان',
+        'prev_year': 'سال قبل',
+        'next_year': 'سال بعد',
+        'select_time_title': 'انتخاب ساعت',
+        'select_now': '●  انتخاب اکنون',
+        'confirm_btn': 'تأیید',
+        'cancel_btn': 'لغو',
+        'hour_minus': 'ساعت −',
+        'hour_plus': 'ساعت +',
+        'minute_minus': 'دقیقه −',
+        'minute_plus': 'دقیقه +',
+        'cat_all': 'همه',
+        'cat_work': 'کار',
+        'cat_study': 'درس',
+        'cat_shopping': 'خرید',
+        'cat_leisure': 'تفریح',
+        'cat_installments': 'اقساط',
+        'cat_general': 'عمومی',
+        'toggle_error': 'خطا در تغییر وضعیت',
+        'delete_error': 'خطا در حذف یادآوری',
+        'load_error': 'خطا در بارگذاری یادآوری‌ها',
+        'save_error': 'خطا در ذخیره یادآوری',
+        'edit_error': 'خطا در ویرایش یادآوری',
+        'add_error': 'خطا در افزودن یادآوری',
+        'complete_error': 'خطا در تکمیل یادآوری',
+        'snooze_error': 'خطا در تاخیر یادآوری',
+        'snooze_options_error': 'خطا در نمایش گزینه‌های تاخیر',
+        'export_error': 'خطا در خروجی گرفتن',
+        'import_read_error': 'خطا در خواندن فایل',
+        'save_file_error': 'خطا در ذخیره فایل',
+        'invalid_end_date': 'تاریخ پایان نامعتبر است',
+        'form_error': 'خطا در نمایش فرم',
+        'autostart_on': 'اجرای خودکار فعال شد',
+        'autostart_off': 'اجرای خودکار غیرفعال شد',
+        'autostart_error': 'خطا در تنظیم اجرای خودکار',
+        'start_with_windows': 'اجرا با ویندوز',
+        'background_run': 'اجرا در پس‌زمینه',
+        'clean_files': 'پاک‌سازی فایل‌ها',
+        'files_cleaned': '{} فایل اضافی پاک شد',
+        'no_extra_files': 'فایل اضافی برای پاک کردن نبود',
+        'cleanup_error': 'خطا در پاک‌سازی',
+        'export_path_hint': 'انتخاب مسیر برای ذخیره خروجی',
+        'import_path_hint': 'انتخاب فایل JSON برای ورودی (فایل‌های خروجی داخل همین پوشه)',
+        'import_path_hint_android': 'فایل‌های خروجی برنامه در همین پوشه ذخیره می‌شوند\nیکی را انتخاب کنید',
+        'developer': 'سازنده',
+        'email_label': 'ایمیل',
+        'bale_label': 'بله',
+        'version_label': 'نسخه',
+        'done_next': 'یادآوری انجام شد؛ یادآوری بعدی: {}',
+        'done_cycle_end': 'یادآوری انجام شد (پایان چرخه تکرار)',
+        'android_autostart_tip': 'برای اجرای خودکار در اندروید:\nتنظیمات گوشی → برنامه‌ها → یادآور → باتری → بدون محدودیت',
+        'language_label': 'زبان / Language',
+        'repeat_daily_suffix': ' (روزانه)',
+        'repeat_weekly_suffix': ' (هفتگی)',
+        'repeat_monthly_suffix': ' (ماهانه)',
+        'about_note': 'در صورت نیاز یا پیشنهاد با من در ارتباط باشید',
+        'about_line': '{name}  —  {version_label} {version}',
+        'about_dev': '{dev_label}: {developer}',
+        'about_email': '{email_label}: {email}',
+        'about_bale': '{bale_label}: {bale}',
     },
     'en': {
         'app_name': 'Yadavar',
@@ -456,8 +538,102 @@ TRANSLATIONS = {
         'expired': '❌ Usage time has expired\nPlease contact the developer',
         'exit': 'Exit',
         'contact_info': 'Contact us to get the extension code',
+        'categories': 'Categories',
+        'category': 'Category',
+        'category_label': 'Category:',
+        'add_category': 'Add Category',
+        'enter_category_name': 'Enter new category name',
+        'category_hint': 'e.g. Sports, Family, ...',
+        'category_exists': 'This category already exists',
+        'category_added': 'Category «{}» added',
+        'enter_category': 'Please enter category name',
+        'select_category': 'Select a category',
+        'select_repeat': 'Select repeat type',
+        'repeat_title': 'Repeat Reminder',
+        'end_date_title': 'Repeat End Date',
+        'end_date_placeholder': 'End Date',
+        'prev_year': 'Prev Year',
+        'next_year': 'Next Year',
+        'select_time_title': 'Select Time',
+        'select_now': '●  Select Now',
+        'confirm_btn': 'OK',
+        'cancel_btn': 'Cancel',
+        'hour_minus': 'Hour −',
+        'hour_plus': 'Hour +',
+        'minute_minus': 'Min −',
+        'minute_plus': 'Min +',
+        'cat_all': 'All',
+        'cat_work': 'Work',
+        'cat_study': 'Study',
+        'cat_shopping': 'Shopping',
+        'cat_leisure': 'Leisure',
+        'cat_installments': 'Installments',
+        'cat_general': 'General',
+        'toggle_error': 'Error changing status',
+        'delete_error': 'Error deleting reminder',
+        'load_error': 'Error loading reminders',
+        'save_error': 'Error saving reminder',
+        'edit_error': 'Error editing reminder',
+        'add_error': 'Error adding reminder',
+        'complete_error': 'Error completing reminder',
+        'snooze_error': 'Error snoozing reminder',
+        'snooze_options_error': 'Error showing snooze options',
+        'export_error': 'Export error',
+        'import_read_error': 'Error reading file',
+        'save_file_error': 'Error saving file',
+        'invalid_end_date': 'Invalid end date',
+        'form_error': 'Error showing form',
+        'autostart_on': 'Autostart enabled',
+        'autostart_off': 'Autostart disabled',
+        'autostart_error': 'Autostart error',
+        'start_with_windows': 'Start with Windows',
+        'background_run': 'Background run',
+        'clean_files': 'Clean files',
+        'files_cleaned': '{} extra file(s) cleaned',
+        'no_extra_files': 'No extra files',
+        'cleanup_error': 'Cleanup error',
+        'export_path_hint': 'Select path to save export',
+        'import_path_hint': 'Select JSON file to import',
+        'import_path_hint_android': 'App export files are in this folder\nSelect one',
+        'developer': 'Developer',
+        'email_label': 'Email',
+        'bale_label': 'Bale',
+        'version_label': 'Version',
+        'done_next': 'Done; next reminder: {}',
+        'done_cycle_end': 'Done (repeat cycle ended)',
+        'android_autostart_tip': 'For Android auto-start:\nSettings → Apps → Yadavar → Battery → Unrestricted',
+        'language_label': 'Language / زبان',
+        'repeat_daily_suffix': ' (Daily)',
+        'repeat_weekly_suffix': ' (Weekly)',
+        'repeat_monthly_suffix': ' (Monthly)',
+        'about_note': 'If needed or for suggestions, please contact me',
+        'about_line': '{name}  —  {version_label} {version}',
+        'about_dev': '{dev_label}: {developer}',
+        'about_email': '{email_label}: {email}',
+        'about_bale': '{bale_label}: {bale}',
     }
 }
+
+# نگاشت نام داخلی دسته (فارسی ذخیره‌شده) به کلید ترجمه
+CATEGORY_KEY_MAP = {
+    'همه': 'cat_all',
+    'کار': 'cat_work',
+    'درس': 'cat_study',
+    'خرید': 'cat_shopping',
+    'تفریح': 'cat_leisure',
+    'اقساط': 'cat_installments',
+    'عمومی': 'cat_general',
+}
+
+
+def translate_category(name, lang='fa'):
+    """نمایش نام دسته بر اساس زبان — مقدار ذخیره‌شده همیشه فارسی است"""
+    if not name:
+        name = 'عمومی'
+    key = CATEGORY_KEY_MAP.get(name)
+    if key:
+        return _(key, lang)
+    return name
 
 
 def _(key, lang='fa'):
@@ -1085,15 +1261,16 @@ class PersianTextInput(TextInput):
     def __init__(self, **kwargs):
         hint = kwargs.pop('hint_text', '')
         password = kwargs.pop('password', False)
+        # فونت قبلی برنامه + رنگ مشکی پررنگ برای خوانایی هنگام تایپ
         kwargs.setdefault('font_name', 'PersianFont')
         kwargs.setdefault('halign', 'right')
         kwargs.setdefault('padding', [dp(12), dp(10), dp(12), dp(10)])
         kwargs.setdefault('background_normal', '')
         kwargs.setdefault('background_active', '')
         kwargs.setdefault('background_color', (1, 1, 1, 1))
-        kwargs.setdefault('foreground_color', (0.1, 0.1, 0.1, 1))
-        kwargs.setdefault('cursor_color', (0.2, 0.5, 0.3, 1))
-        kwargs.setdefault('hint_text_color', (0.55, 0.55, 0.6, 1))
+        kwargs.setdefault('foreground_color', (0.0, 0.0, 0.0, 1))  # مشکی پررنگ
+        kwargs.setdefault('cursor_color', (0.15, 0.35, 0.25, 1))
+        kwargs.setdefault('hint_text_color', (0.40, 0.42, 0.46, 1))
         kwargs.setdefault('multiline', False)
         super().__init__(**kwargs)
 
@@ -1143,8 +1320,15 @@ class PersianTextInput(TextInput):
 
     def apply_theme(self, theme):
         self.background_color = theme['input_bg']
-        self.foreground_color = theme['input_fg']
-        self.hint_text_color = theme['search_hint']
+        # متن تایپ پررنگ: مشکی در تم روشن، روشن در تم تاریک
+        fg = theme.get('input_fg', (0, 0, 0, 1))
+        bg = theme.get('input_bg', (1, 1, 1, 1))
+        if isinstance(bg, (list, tuple)) and len(bg) >= 3 and sum(bg[:3]) > 2.0:
+            self.foreground_color = (0.0, 0.0, 0.0, 1)
+        else:
+            self.foreground_color = fg
+        self.hint_text_color = theme.get('search_hint', (0.45, 0.48, 0.52, 1))
+        self.font_name = 'PersianFont'
 
 
 # ==================================================
@@ -1334,8 +1518,14 @@ class JalaliCalendar(BoxLayout):
             height=dp(36),
             spacing=dp(8),
         )
+        try:
+            app = App.get_running_app()
+            prev_year_txt = app._('prev_year') if app else 'سال قبل'
+            next_year_txt = app._('next_year') if app else 'سال بعد'
+        except Exception:
+            prev_year_txt, next_year_txt = 'سال قبل', 'سال بعد'
         year_prev = PersianButton(
-            text='سال قبل',
+            text=prev_year_txt,
             size_hint_x=0.4,
             background_color=get_color_from_hex('#00897B'),
             color=(1, 1, 1, 1),
@@ -1343,7 +1533,7 @@ class JalaliCalendar(BoxLayout):
         )
         year_prev.bind(on_press=self.prev_year)
         year_next = PersianButton(
-            text='سال بعد',
+            text=next_year_txt,
             size_hint_x=0.4,
             background_color=get_color_from_hex('#00897B'),
             color=(1, 1, 1, 1),
@@ -1388,6 +1578,171 @@ class JalaliCalendar(BoxLayout):
         self.build_calendar()
 
 
+class GregorianCalendar(BoxLayout):
+    """تقویم میلادی برای زبان انگلیسی"""
+
+    MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
+                   'July', 'August', 'September', 'October', 'November', 'December']
+
+    def __init__(self, selected_date=None, callback=None, **kwargs):
+        super().__init__(**kwargs)
+        self.orientation = 'vertical'
+        self.spacing = dp(6)
+        self.padding = dp(10)
+        self.selected_date = selected_date
+        self.callback = callback
+        now = datetime.now()
+        self.current_year, self.current_month = now.year, now.month
+        if selected_date:
+            try:
+                parts = selected_date.replace('-', '/').split('/')
+                if len(parts) == 3:
+                    self.current_year = int(parts[0])
+                    self.current_month = int(parts[1])
+            except Exception:
+                pass
+        with self.canvas.before:
+            Color(0.05, 0.45, 0.40, 1)
+            self._bg = RoundedRectangle(pos=self.pos, size=self.size, radius=[dp(16)])
+        self.bind(pos=self._update_bg, size=self._update_bg)
+        self.build_calendar()
+
+    def _update_bg(self, *args):
+        self._bg.pos = self.pos
+        self._bg.size = self.size
+
+    def _get_days_in_month(self, year, month):
+        from calendar import monthrange
+        return monthrange(year, month)[1]
+
+    def _get_first_day_of_month(self, year, month):
+        wd = datetime(year, month, 1).weekday()  # Mon=0
+        return (wd + 1) % 7  # Sun=0 for display
+
+    def build_calendar(self):
+        self.clear_widgets()
+        header = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(44), spacing=dp(4))
+        prev_btn = PersianButton(
+            text='‹', size_hint_x=None, width=dp(40),
+            background_color=(0, 0, 0, 0), color=(0.85, 0.95, 0.90, 1), font_size='26sp', bold=True,
+        )
+        prev_btn.bind(on_press=self.prev_month)
+        month_name = self.MONTH_NAMES[self.current_month - 1] if 1 <= self.current_month <= 12 else str(self.current_month)
+        self.month_year_label = PersianLabel(
+            text=f'{month_name}  {self.current_year}', font_size='20sp', color=(1, 1, 1, 1), bold=True, size_hint_x=1,
+        )
+        next_btn = PersianButton(
+            text='›', size_hint_x=None, width=dp(40),
+            background_color=(0, 0, 0, 0), color=(0.85, 0.95, 0.90, 1), font_size='26sp', bold=True,
+        )
+        next_btn.bind(on_press=self.next_month)
+        header.add_widget(prev_btn)
+        header.add_widget(self.month_year_label)
+        header.add_widget(next_btn)
+        self.add_widget(header)
+
+        day_row = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(28), spacing=dp(2))
+        for name in ['S', 'M', 'T', 'W', 'T', 'F', 'S']:
+            day_row.add_widget(PersianLabel(
+                text=name, font_size='14sp', color=(0.75, 0.90, 0.85, 1), bold=True, size_hint_x=1/7,
+            ))
+        self.add_widget(day_row)
+
+        days_grid = GridLayout(cols=7, spacing=dp(4), size_hint_y=None, height=dp(44 * 6), padding=[dp(2), 0])
+        first_day = self._get_first_day_of_month(self.current_year, self.current_month)
+        days_in_month = self._get_days_in_month(self.current_year, self.current_month)
+        for _ in range(first_day):
+            days_grid.add_widget(Label(text='', size_hint_y=None, height=dp(42)))
+
+        today = datetime.now()
+        today_tuple = (today.year, today.month, today.day)
+        selected_tuple = None
+        if self.selected_date:
+            try:
+                sp = self.selected_date.replace('-', '/').split('/')
+                if len(sp) == 3:
+                    selected_tuple = (int(sp[0]), int(sp[1]), int(sp[2]))
+            except Exception:
+                pass
+
+        for day in range(1, days_in_month + 1):
+            is_today = (self.current_year, self.current_month, day) == today_tuple
+            is_selected = selected_tuple == (self.current_year, self.current_month, day)
+            if is_selected:
+                bg = get_color_from_hex('#FF7043')
+                fg = (1, 1, 1, 1)
+            elif is_today:
+                bg = get_color_from_hex('#26A69A')
+                fg = (1, 1, 1, 1)
+            else:
+                bg = (0.08, 0.50, 0.45, 0.6)
+                fg = (1, 1, 1, 1)
+            btn = PersianButton(
+                text=str(day), font_size='16sp', background_color=bg, color=fg,
+                size_hint_y=None, height=dp(42), bold=is_today or is_selected,
+            )
+            btn.background_normal = ''
+            btn.background_down = ''
+            btn.bind(on_press=lambda inst, d=day: self.select_date(d))
+            days_grid.add_widget(btn)
+        self.add_widget(days_grid)
+
+        year_row = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(36), spacing=dp(8))
+        year_prev = PersianButton(
+            text='Prev Year', size_hint_x=0.4,
+            background_color=get_color_from_hex('#00897B'), color=(1, 1, 1, 1), font_size='13sp',
+        )
+        year_prev.bind(on_press=self.prev_year)
+        year_next = PersianButton(
+            text='Next Year', size_hint_x=0.4,
+            background_color=get_color_from_hex('#00897B'), color=(1, 1, 1, 1), font_size='13sp',
+        )
+        year_next.bind(on_press=self.next_year)
+        year_row.add_widget(Widget())
+        year_row.add_widget(year_prev)
+        year_row.add_widget(year_next)
+        year_row.add_widget(Widget())
+        self.add_widget(year_row)
+
+    def select_date(self, day):
+        date_str = f"{self.current_year:04d}/{self.current_month:02d}/{day:02d}"
+        self.selected_date = date_str
+        self.build_calendar()
+        if self.callback:
+            self.callback(date_str)
+
+    def prev_month(self, instance):
+        if self.current_month == 1:
+            self.current_month = 12
+            self.current_year -= 1
+        else:
+            self.current_month -= 1
+        self.build_calendar()
+
+    def next_month(self, instance):
+        if self.current_month == 12:
+            self.current_month = 1
+            self.current_year += 1
+        else:
+            self.current_month += 1
+        self.build_calendar()
+
+    def prev_year(self, instance):
+        self.current_year -= 1
+        self.build_calendar()
+
+    def next_year(self, instance):
+        self.current_year += 1
+        self.build_calendar()
+
+
+def make_date_calendar(selected_date=None, callback=None, lang='fa', **kwargs):
+    """تقویم شمسی برای فارسی، میلادی برای انگلیسی"""
+    if lang == 'en':
+        return GregorianCalendar(selected_date=selected_date, callback=callback, **kwargs)
+    return JalaliCalendar(selected_date=selected_date, callback=callback, **kwargs)
+
+
 # ==================================================
 # ویجت ساعت
 # ==================================================
@@ -1424,8 +1779,22 @@ class TimePickerWidget(BoxLayout):
         self.clear_widgets()
 
         # عنوان
+        try:
+            app = App.get_running_app()
+            t_title = app._('select_time_title') if app else 'انتخاب ساعت'
+            t_hminus = app._('hour_minus') if app else 'ساعت −'
+            t_hplus = app._('hour_plus') if app else 'ساعت +'
+            t_mminus = app._('minute_minus') if app else 'دقیقه −'
+            t_mplus = app._('minute_plus') if app else 'دقیقه +'
+            t_now = app._('select_now') if app else '●  انتخاب اکنون'
+            t_ok = app._('confirm_btn') if app else 'تأیید'
+            t_cancel = app._('cancel_btn') if app else 'لغو'
+        except Exception:
+            t_title, t_hminus, t_hplus = 'انتخاب ساعت', 'ساعت −', 'ساعت +'
+            t_mminus, t_mplus = 'دقیقه −', 'دقیقه +'
+            t_now, t_ok, t_cancel = '●  انتخاب اکنون', 'تأیید', 'لغو'
         self.add_widget(PersianLabel(
-            text='انتخاب ساعت',
+            text=t_title,
             font_size='18sp',
             color=(0.1, 0.1, 0.12, 1),
             size_hint_y=None,
@@ -1496,7 +1865,7 @@ class TimePickerWidget(BoxLayout):
 
         # دکمه‌های تنظیم سریع ±۱
         adj = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(36), spacing=dp(8))
-        for label, hdelta, mdelta in [('ساعت −', -1, 0), ('ساعت +', 1, 0), ('دقیقه −', 0, -1), ('دقیقه +', 0, 1)]:
+        for label, hdelta, mdelta in [(t_hminus, -1, 0), (t_hplus, 1, 0), (t_mminus, 0, -1), (t_mplus, 0, 1)]:
             b = PersianButton(
                 text=label,
                 background_color=get_color_from_hex('#ECEFF1'),
@@ -1510,7 +1879,7 @@ class TimePickerWidget(BoxLayout):
 
         # انتخاب اکنون
         now_btn = PersianButton(
-            text='●  انتخاب اکنون',
+            text=t_now,
             size_hint_y=None,
             height=dp(36),
             background_color=(0, 0, 0, 0),
@@ -1522,7 +1891,7 @@ class TimePickerWidget(BoxLayout):
 
         # تأیید سبز
         ok_btn = PersianButton(
-            text='تأیید',
+            text=t_ok,
             size_hint_y=None,
             height=dp(48),
             background_color=get_color_from_hex('#43A047'),
@@ -1534,7 +1903,7 @@ class TimePickerWidget(BoxLayout):
 
         # لغو
         cancel_btn = PersianButton(
-            text='لغو',
+            text=t_cancel,
             size_hint_y=None,
             height=dp(36),
             background_color=(0, 0, 0, 0),
@@ -1834,7 +2203,21 @@ def now_jalali_tuple():
         return (now.year - 621, now.month, now.day, now.hour, now.minute)
 
 
-def get_default_date():
+def get_default_date(lang='fa'):
+    """تاریخ امروز — شمسی برای fa، میلادی برای en (فرمت ذخیره‌سازی همیشه شمسی است)"""
+    now = datetime.now()
+    try:
+        jalali = jdatetime.datetime.fromgregorian(datetime=now)
+        jalali_str = f"{jalali.year:04d}/{jalali.month:02d}/{jalali.day:02d}"
+    except Exception:
+        jalali_str = f"{now.year-621:04d}/{now.month:02d}/{now.day:02d}"
+    if lang == 'en':
+        return f"{now.year:04d}/{now.month:02d}/{now.day:02d}"
+    return jalali_str
+
+
+def get_default_date_storage():
+    """همیشه تاریخ شمسی برای ذخیره در دیتابیس"""
     now = datetime.now()
     try:
         jalali = jdatetime.datetime.fromgregorian(datetime=now)
@@ -1854,6 +2237,78 @@ def jalali_to_gregorian(year, month, day):
         return jd.togregorian()
     except Exception:
         return None
+
+
+def gregorian_to_jalali_str(year, month, day):
+    try:
+        from datetime import date as _date
+        jd = jdatetime.date.fromgregorian(date=_date(year, month, day))
+        return f"{jd.year:04d}/{jd.month:02d}/{jd.day:02d}"
+    except Exception:
+        return None
+
+
+def storage_to_display_date(date_str, lang='fa'):
+    """تبدیل تاریخ ذخیره‌شده (شمسی) به تاریخ نمایشی"""
+    if not date_str:
+        return ''
+    if lang != 'en':
+        return date_str.replace('-', '/')
+    try:
+        parts = date_str.replace('-', '/').split('/')
+        if len(parts) != 3:
+            return date_str
+        y, m, d = int(parts[0]), int(parts[1]), int(parts[2])
+        # اگر سال میلادی باشد (مثلاً 2024+) همان را برگردان
+        if y > 1600:
+            return f"{y:04d}/{m:02d}/{d:02d}"
+        gd = jalali_to_gregorian(y, m, d)
+        if gd:
+            return f"{gd.year:04d}/{gd.month:02d}/{gd.day:02d}"
+    except Exception:
+        pass
+    return date_str
+
+
+def display_to_storage_date(date_str, lang='fa'):
+    """تبدیل تاریخ ورودی کاربر به شمسی برای ذخیره"""
+    if not date_str:
+        return get_default_date_storage()
+    try:
+        parts = date_str.replace('-', '/').split('/')
+        if len(parts) != 3:
+            return date_str
+        y, m, d = int(parts[0]), int(parts[1]), int(parts[2])
+        if lang == 'en' or y > 1600:
+            # ورودی میلادی
+            result = gregorian_to_jalali_str(y, m, d)
+            return result or date_str
+        return f"{y:04d}/{m:02d}/{d:02d}"
+    except Exception:
+        return date_str
+
+
+def is_valid_gregorian_date(date_str):
+    try:
+        parts = date_str.replace('-', '/').strip().split('/')
+        if len(parts) != 3:
+            return False
+        y, m, d = int(parts[0]), int(parts[1]), int(parts[2])
+        if not (1900 <= y <= 2100):
+            return False
+        if not (1 <= m <= 12):
+            return False
+        from calendar import monthrange
+        max_day = monthrange(y, m)[1]
+        return 1 <= d <= max_day
+    except Exception:
+        return False
+
+
+def is_valid_date_for_lang(date_str, lang='fa'):
+    if lang == 'en':
+        return is_valid_gregorian_date(date_str)
+    return is_valid_jalali_date(date_str)
 
 
 def days_in_jalali_month(year, month):
@@ -2106,7 +2561,7 @@ class ReminderApp(App):
         )
         header.add_widget(self.title_label)
 
-        add_btn = PersianButton(
+        self._add_btn = PersianButton(
             text=self._('add'),
             size_hint_x=0.26,
             background_color=get_color_from_hex('#2E7D32'),
@@ -2114,18 +2569,18 @@ class ReminderApp(App):
             font_size='13sp',
             bold=True,
         )
-        add_btn.bind(on_press=self.show_add_reminder)
-        header.add_widget(add_btn)
+        self._add_btn.bind(on_press=self.show_add_reminder)
+        header.add_widget(self._add_btn)
 
-        settings_btn = PersianButton(
+        self._settings_btn = PersianButton(
             text=self._('settings'),
             size_hint_x=0.26,
             background_color=get_color_from_hex('#455A64'),
             color=(1, 1, 1, 1),
             font_size='12sp',
         )
-        settings_btn.bind(on_press=self.show_settings)
-        header.add_widget(settings_btn)
+        self._settings_btn.bind(on_press=self.show_settings)
+        header.add_widget(self._settings_btn)
 
         # دکمه «پاک» از هدر حذف شد (طبق درخواست کاربر)
 
@@ -2218,8 +2673,8 @@ class ReminderApp(App):
         self.root_layout.add_widget(filter_row2)
 
         # ردیف دسته‌بندی‌ها (مشابه تصویر)
-        cat_header = PersianLabel(
-            text='دسته‌بندی‌ها',
+        self.cat_header_label = PersianLabel(
+            text=self._('categories'),
             font_size='13sp',
             color=self.theme['header_title'],
             size_hint_y=None,
@@ -2227,7 +2682,7 @@ class ReminderApp(App):
             bold=True,
             halign='right',
         )
-        self.root_layout.add_widget(cat_header)
+        self.root_layout.add_widget(self.cat_header_label)
 
         self.category_scroll = ScrollView(
             do_scroll_y=False,
@@ -2289,7 +2744,7 @@ class ReminderApp(App):
         try:
             removed = self.db.cleanup_extra_files(max_age_days=14, max_exports=5)
             if removed > 0:
-                msg = f'{removed} فایل اضافی پاک شد' if self.language == 'fa' else f'{removed} extra file(s) cleaned'
+                msg = self._('files_cleaned').format(removed)
                 self._show_success(msg)
                 log(f"[OK] Auto-cleanup removed {removed} file(s)")
         except Exception as e:
@@ -2414,7 +2869,29 @@ class ReminderApp(App):
         self.language = lang
         self.settings.set('language', lang)
         if hasattr(self, 'search_input'):
-            self.search_input.hint_text = reshape_persian(self._('search_hint'))
+            hint = self._('search_hint')
+            self.search_input.hint_text = reshape_persian(hint) if lang == 'fa' else hint
+        if hasattr(self, 'title_label'):
+            self._update_header_count()
+        # دکمه‌های هدر
+        try:
+            for child in self.root_layout.children:
+                pass
+            # پیدا کردن دکمه‌های add و settings از طریق هدر
+            header = None
+            for w in self.root_layout.children:
+                if isinstance(w, BoxLayout) and w.size_hint_y is None and getattr(w, 'height', 0) and len(w.children) >= 3:
+                    # ممکن است هدر باشد
+                    texts = []
+            # به‌روزرسانی مستقیم اگر ذخیره شده باشند
+            if hasattr(self, '_add_btn'):
+                self._add_btn.set_text(self._('add'))
+            if hasattr(self, '_settings_btn'):
+                self._settings_btn.set_text(self._('settings'))
+        except Exception:
+            pass
+        if hasattr(self, 'cat_header_label'):
+            self.cat_header_label.set_text(self._('categories'))
         filter_labels = [
             ('all', self._('all')),
             ('today', self._('today')),
@@ -2426,6 +2903,7 @@ class ReminderApp(App):
         for ftype, label in filter_labels:
             if ftype in self.filter_buttons:
                 self.filter_buttons[ftype].set_text(label)
+        self._build_category_buttons()
         self.load_reminders()
 
     def on_stop(self):
@@ -2522,13 +3000,13 @@ class ReminderApp(App):
             elif self.current_filter == 'active':
                 reminders = [r for r in reminders if r[5] == 0]
             elif self.current_filter == 'today':
-                today_str = get_default_date()
+                today_str = get_default_date_storage()
                 reminders = [r for r in reminders if r[5] == 0 and r[3].replace('-', '/') == today_str]
             elif self.current_filter == 'tomorrow':
                 tomorrow_str = get_jalali_date_offset(1)
                 reminders = [r for r in reminders if r[5] == 0 and r[3].replace('-', '/') == tomorrow_str]
             elif self.current_filter == 'week':
-                start_str = get_default_date()
+                start_str = get_default_date_storage()
                 end_str = get_jalali_date_offset(6)
                 reminders = [
                     r for r in reminders
@@ -2563,11 +3041,11 @@ class ReminderApp(App):
                 self.reminders_container.add_widget(empty)
                 return
 
-            repeat_fa = {
+            repeat_suffixes = {
                 'none': '',
-                'daily': ' (روزانه)',
-                'weekly': ' (هفتگی)',
-                'monthly': ' (ماهانه)'
+                'daily': self._('repeat_daily_suffix'),
+                'weekly': self._('repeat_weekly_suffix'),
+                'monthly': self._('repeat_monthly_suffix'),
             }
 
             for reminder in reminders:
@@ -2581,8 +3059,10 @@ class ReminderApp(App):
                     notify_before = reminder[7] if len(reminder) > 7 else 15
                     repeat_type = reminder[8] if len(reminder) > 8 else 'none'
                     category = reminder[12] if len(reminder) > 12 else 'عمومی'
+                    category_display = translate_category(category, self.language)
+                    date_display = storage_to_display_date(date_text, self.language)
 
-                    repeat_suffix = repeat_fa.get(repeat_type, '')
+                    repeat_suffix = repeat_suffixes.get(repeat_type, '')
                     display_title = title_text + repeat_suffix
 
                     status = date_status(date_text) if not is_done else 'done'
@@ -2592,7 +3072,7 @@ class ReminderApp(App):
                     desc_height = min(desc_lines * 20, 60) if description_text else 0
                     badge_height = 18 if status in ('today', 'overdue') else 0
                     cat_height = 18
-                    btn_height = 36
+                    btn_height = 48
                     padding = 28
 
                     card_height = dp(title_height + desc_height + badge_height + cat_height + btn_height + padding)
@@ -2658,9 +3138,9 @@ class ReminderApp(App):
                         )
                         card.add_widget(desc_lbl)
 
-                    # دسته
+                    # دسته (ترجمه‌شده)
                     cat_lbl = PersianLabel(
-                        text=category,
+                        text=f'{category_display}  ·  {date_display}',
                         font_size='13sp',
                         color=get_color_from_hex('#00796B'),
                         halign='right',
@@ -2683,19 +3163,20 @@ class ReminderApp(App):
                         )
                         card.add_widget(st_lbl)
 
-                    # ردیف دکمه‌ها: زمان | ویرایش | حذف
+                    # ردیف دکمه‌ها: تاریخ+ساعت | ویرایش | حذف
                     btn_row = BoxLayout(
                         orientation='horizontal',
                         size_hint_y=None,
-                        height=dp(38),
+                        height=dp(48),
                         spacing=dp(6),
                     )
+                    # تاریخ بالای ساعت روی دکمه سبز
                     time_btn = PersianButton(
-                        text=f'🕒 {time_text}',
-                        size_hint_x=0.34,
+                        text=f'{date_display}\n🕒 {time_text}',
+                        size_hint_x=0.40,
                         background_color=get_color_from_hex('#2E7D32'),
                         color=(1, 1, 1, 1),
-                        font_size='13sp',
+                        font_size='11sp',
                     )
                     # فقط نمایش — با کلیک ویرایش باز شود
                     time_btn.bind(on_press=lambda inst, r=rid: self.show_edit_reminder(r))
@@ -2732,7 +3213,7 @@ class ReminderApp(App):
         except Exception as e:
             log(f"[ERROR] load_reminders error: {e}")
             error_label = PersianLabel(
-                text='خطا در بارگذاري يادآوري‌ها',
+                text=self._('load_error'),
                 font_size='16sp',
                 color=(1, 0.5, 0.5, 1),
                 size_hint_y=None,
@@ -2754,10 +3235,10 @@ class ReminderApp(App):
                     del self._active_alerts[rid]
                 self.load_reminders()
             else:
-                self._show_error('خطا در تغییر وضعیت')
+                self._show_error(self._('toggle_error'))
         except Exception as e:
             log(f"[ERROR] _toggle error: {e}")
-            self._show_error('خطا در تغییر وضعیت')
+            self._show_error(self._('toggle_error'))
 
     def _delete(self, rid):
         try:
@@ -2835,18 +3316,18 @@ class ReminderApp(App):
                         self.load_reminders()
                         self._show_success(self._('reminder_deleted'))
                     else:
-                        self._show_error('خطا در حذف یادآوری')
+                        self._show_error(self._('delete_error'))
                 except Exception as e:
                     log(f"[ERROR] do_delete error: {e}")
                     popup.dismiss()
-                    self._show_error('خطا در حذف یادآوری')
+                    self._show_error(self._('delete_error'))
 
             cancel_btn.bind(on_press=popup.dismiss)
             confirm_btn.bind(on_press=do_delete)
             popup.open()
         except Exception as e:
             log(f"[ERROR] _delete error: {e}")
-            self._show_error('خطا در حذف یادآوری')
+            self._show_error(self._('delete_error'))
 
     def filter_reminders(self, filter_type):
         try:
@@ -2864,16 +3345,16 @@ class ReminderApp(App):
             cats = self.categories.get_all()
             for cat in cats:
                 is_active = (cat == self.current_category)
-                # شبیه تصویر: چیپ سفید گرد؛ فعال = آبی
+                display_name = translate_category(cat, self.language)
                 if is_active:
                     bg = get_color_from_hex('#1565C0')
                     fg = (1, 1, 1, 1)
                 else:
                     bg = (1, 1, 1, 1)
                     fg = (0.12, 0.12, 0.15, 1)
-                w = dp(max(64, len(cat) * 14 + 28))
+                w = dp(max(64, len(display_name) * 14 + 28))
                 btn = PersianButton(
-                    text=cat,
+                    text=display_name,
                     size_hint=(None, None),
                     size=(w, dp(38)),
                     background_color=bg,
@@ -2928,14 +3409,14 @@ class ReminderApp(App):
         try:
             box = BoxLayout(orientation='vertical', spacing=dp(10), padding=dp(14))
             box.add_widget(PersianLabel(
-                text='نام دسته جدید را وارد کنید',
+                text=self._('enter_category_name'),
                 font_size='14sp',
                 color=(1, 1, 1, 1),
                 size_hint_y=None,
                 height=dp(30),
             ))
             name_input = PersianTextInput(
-                hint_text='مثال: ورزش، خانواده، ...',
+                hint_text=self._('category_hint'),
                 multiline=False,
                 size_hint_y=None,
                 height=dp(44),
@@ -2960,7 +3441,7 @@ class ReminderApp(App):
             box.add_widget(btn_row)
 
             popup = Popup(
-                title=reshape_persian('افزودن دسته‌بندی'),
+                title=reshape_persian(self._('add_category')),
                 content=box,
                 size_hint=(0.85, 0.35),
                 auto_dismiss=False,
@@ -2974,14 +3455,14 @@ class ReminderApp(App):
             def do_save(_inst):
                 name = name_input.value
                 if not name:
-                    self._show_error('نام دسته را وارد کنید')
+                    self._show_error(self._('enter_category'))
                     return
                 if self.categories.add(name):
                     popup.dismiss()
                     self._build_category_buttons()
-                    self._show_success(f'دسته «{name}» اضافه شد')
+                    self._show_success(self._('category_added').format(name))
                 else:
-                    self._show_error('این دسته از قبل وجود دارد')
+                    self._show_error(self._('category_exists'))
 
             cancel_btn.bind(on_press=popup.dismiss)
             save_btn.bind(on_press=do_save)
@@ -2990,52 +3471,96 @@ class ReminderApp(App):
             log(f"[ERROR] show_add_category: {e}")
 
     def _play_alert_sound(self):
-        """پخش یک‌بار صدای ملایم یادآوری"""
-        # اندروید: ویبره کوتاه یک‌بار
+        """پخش صدای یادآوری شبیه SMS + ویبره روی اندروید"""
+        played = False
+
+        # ---- اندروید: صدای اعلان پیش‌فرض سیستم (شبیه SMS) + ویبره ----
         if platform == 'android':
             try:
+                from jnius import autoclass
+                RingtoneManager = autoclass('android.media.RingtoneManager')
+                from android import mActivity
+                uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                ringtone = RingtoneManager.getRingtone(mActivity, uri)
+                if ringtone is not None:
+                    ringtone.play()
+                    played = True
+                    log("[OK] Android notification ringtone played")
+            except Exception as e:
+                log(f"[WARN] Android ringtone error: {e}")
+                try:
+                    from jnius import autoclass
+                    MediaPlayer = autoclass('android.media.MediaPlayer')
+                    RingtoneManager = autoclass('android.media.RingtoneManager')
+                    from android import mActivity
+                    uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                    mp = MediaPlayer()
+                    mp.setDataSource(mActivity, uri)
+                    mp.prepare()
+                    mp.start()
+                    played = True
+                    log("[OK] Android MediaPlayer notification sound")
+                except Exception as e2:
+                    log(f"[WARN] Android MediaPlayer sound error: {e2}")
+
+            try:
                 if HAS_VIBRATOR:
-                    vibrator.vibrate(0.35)
-                return True
+                    vibrator.vibrate(0.4)
             except Exception as e:
                 log(f"[WARN] Android vibrate error: {e}")
-        
-        # ویندوز: صدای ملایم‌تر (فرکانس پایین‌تر و کوتاه‌تر)
+
+            if played:
+                return True
+
+        # ---- ویندوز: الگوی صوتی شبیه SMS (چند بوق کوتاه صعودی) ----
         if HAS_WINSOUND:
             try:
-                # دو بوق کوتاه و ملایم به‌جای سه بوق تیز
-                winsound.Beep(660, 180)   # نت E5 کوتاه
-                winsound.Beep(880, 220)   # نت A5
+                winsound.Beep(800, 100)
+                winsound.Beep(1000, 100)
+                winsound.Beep(1200, 180)
                 return True
             except Exception as e:
                 log(f"[WARN] Winsound error: {e}")
                 try:
-                    winsound.MessageBeep(winsound.MB_OK)  # صدای سیستم ملایم‌تر
+                    winsound.MessageBeep(winsound.MB_ICONASTERISK)
                     return True
                 except Exception:
-                    pass
-        
+                    try:
+                        winsound.MessageBeep(-1)
+                        return True
+                    except Exception:
+                        pass
+
         # سایر سیستم‌ها
         try:
             import subprocess
-            subprocess.run(['beep', '-f', '660', '-l', '200'], check=False)
+            subprocess.run(
+                ['beep', '-f', '800', '-l', '100', '-n', '-f', '1000', '-l', '100', '-n', '-f', '1200', '-l', '180'],
+                check=False,
+            )
             return True
         except Exception:
             try:
                 print('\a')
             except Exception:
                 pass
-        return False
+        return played
 
     def _show_notification(self, title, message):
-        """نمایش اعلان سیستم — روی ویندوز بدون reshape تا متن برعکس نشود"""
+        """نمایش اعلان سیستم.
+        روی اندروید: بدون reshape (سیستم RTL را درست می‌کند) + علامت جهت راست‌به‌چپ
+        تا متنی مثل «قسط» برعکس نشود.
+        """
         try:
             if HAS_PLYER:
-                # روی ویندوز و اکثر دسکتاپ‌ها، سیستم خودش RTL را هندل می‌کند
-                # reshape باعث برعکس شدن متن در نوتیفیکیشن می‌شود
+                t = str(title) if title is not None else ''
+                m = str(message) if message is not None else ''
+                # هرگز arabic_reshaper / get_display روی نوتیفیکیشن نزن
                 if platform == 'android':
-                    t = reshape_persian(str(title))
-                    m = reshape_persian(str(message))
+                    # علامت RTL تا نوتیفیکیشن اندروید جهت را درست بگیرد
+                    RLM = '‏'  # Right-to-Left Mark
+                    t = RLM + t
+                    m = RLM + m
                     kwargs = dict(
                         title=t,
                         message=m,
@@ -3044,9 +3569,10 @@ class ReminderApp(App):
                         ticker=t,
                     )
                 else:
+                    # ویندوز / دسکتاپ: متن خام
                     kwargs = dict(
-                        title=str(title),
-                        message=str(message),
+                        title=t,
+                        message=m,
                         timeout=15,
                         app_name='Yadavar',
                     )
@@ -3395,9 +3921,9 @@ class ReminderApp(App):
                             repeat_end_date=repeat_end,
                             category=cat,
                         )
-                        self._show_success(f'یادآوری انجام شد؛ یادآوری بعدی: {next_date}')
+                        self._show_success(self._('done_next').format(storage_to_display_date(next_date, self.language)))
                     else:
-                        self._show_success('یادآوری انجام شد (پایان چرخه تکرار)')
+                        self._show_success(self._('done_cycle_end'))
                 else:
                     self.db.toggle_completed(rid)
                     self._show_success(self._('reminder_completed'))
@@ -3408,7 +3934,7 @@ class ReminderApp(App):
                 close_alert()
             except Exception as e:
                 log(f"[ERROR] mark_done error: {e}")
-                self._show_error('خطا در تکمیل یادآوری')
+                self._show_error(self._('complete_error'))
 
         def show_snooze_options(_inst):
             try:
@@ -3481,13 +4007,13 @@ class ReminderApp(App):
                         log(f"[ALERT] Reminder {rid} snoozed {minutes} min")
                     except Exception as e:
                         log(f"[ERROR] do_snooze error: {e}")
-                        self._show_error('خطا در تاخیر یادآوری')
+                        self._show_error(self._('snooze_error'))
 
                 cancel_s.bind(on_press=snooze_popup.dismiss)
                 snooze_popup.open()
             except Exception as e:
                 log(f"[ERROR] show_snooze_options error: {e}")
-                self._show_error('خطا در نمایش گزینه‌های تاخیر')
+                self._show_error(self._('snooze_options_error'))
 
         dismiss_btn.bind(on_press=close_alert)
         done_btn.bind(on_press=mark_done)
@@ -3579,7 +4105,7 @@ class ReminderApp(App):
 
         settings_form.add_widget(
             PersianLabel(
-                text='زبان / Language',
+                text=self._('language_label'),
                 font_size='14sp',
                 color=(1, 1, 1, 1),
                 size_hint_y=None,
@@ -3635,9 +4161,9 @@ class ReminderApp(App):
             spacing=dp(8),
         )
         auto_enabled = [self.is_autostart_enabled()]
-        auto_label = 'اجرا با ویندوز' if self.language == 'fa' else 'Start with Windows'
+        auto_label = self._('start_with_windows')
         if platform == 'android':
-            auto_label = 'اجرا در پس‌زمینه' if self.language == 'fa' else 'Background run'
+            auto_label = self._('background_run')
         auto_btn = PersianButton(
             text=auto_label + (' ✓' if auto_enabled[0] else ''),
             background_color=get_color_from_hex('#1565C0' if auto_enabled[0] else '#546E7A'),
@@ -3649,12 +4175,7 @@ class ReminderApp(App):
         def toggle_autostart(_inst):
             if platform == 'android':
                 # در اندروید اجرای واقعی با بوت نیاز به سرویس دارد؛ فقط راهنما
-                tip = (
-                    'برای اجرای خودکار در اندروید:\n'
-                    'تنظیمات گوشی → برنامه‌ها → یادآور → باتری → بدون محدودیت'
-                    if self.language == 'fa' else
-                    'For Android auto-start:\nSettings → Apps → Yadavar → Battery → Unrestricted'
-                )
+                tip = self._('android_autostart_tip')
                 self._show_success(tip)
                 return
             new_state = not auto_enabled[0]
@@ -3662,20 +4183,16 @@ class ReminderApp(App):
                 auto_enabled[0] = new_state
                 auto_btn.background_color = get_color_from_hex('#1565C0' if new_state else '#546E7A')
                 auto_btn.set_text(auto_label + (' ✓' if new_state else ''))
-                msg = (
-                    'اجرای خودکار فعال شد' if new_state else 'اجرای خودکار غیرفعال شد'
-                ) if self.language == 'fa' else (
-                    'Autostart enabled' if new_state else 'Autostart disabled'
-                )
+                msg = self._('autostart_on') if new_state else self._('autostart_off')
                 self._show_success(msg)
             else:
-                self._show_error('خطا در تنظیم اجرای خودکار' if self.language == 'fa' else 'Autostart error')
+                self._show_error(self._('autostart_error'))
 
         auto_btn.bind(on_press=toggle_autostart)
         auto_row.add_widget(auto_btn)
 
         cleanup_btn = PersianButton(
-            text='پاک‌سازی فایل‌ها' if self.language == 'fa' else 'Clean files',
+            text=self._('clean_files'),
             background_color=get_color_from_hex('#6A1B9A'),
             color=(1, 1, 1, 1),
             font_size='12sp',
@@ -3686,16 +4203,12 @@ class ReminderApp(App):
             try:
                 n = self.db.cleanup_extra_files(max_age_days=7, max_exports=3)
                 if n > 0:
-                    self._show_success(
-                        f'{n} فایل اضافی پاک شد' if self.language == 'fa' else f'{n} file(s) cleaned'
-                    )
+                    self._show_success(self._('files_cleaned').format(n))
                 else:
-                    self._show_success(
-                        'فایل اضافی برای پاک کردن نبود' if self.language == 'fa' else 'No extra files'
-                    )
+                    self._show_success(self._('no_extra_files'))
             except Exception as e:
                 log(f"[ERROR] manual cleanup: {e}")
-                self._show_error('خطا در پاک‌سازی')
+                self._show_error(self._('cleanup_error'))
 
         cleanup_btn.bind(on_press=do_manual_cleanup)
         auto_row.add_widget(cleanup_btn)
@@ -3816,7 +4329,7 @@ class ReminderApp(App):
         try:
             data = self.db.export_data()
             if not data:
-                self._show_error('خطا در خروجی گرفتن')
+                self._show_error(self._('export_error'))
                 return
 
             # روی اندروید فایل را مستقیماً در data_dir ذخیره می‌کنیم (امن‌تر و بدون مشکل Scoped Storage)
@@ -3830,7 +4343,7 @@ class ReminderApp(App):
                     log(f"[OK] Exported to {file_path}")
                 except Exception as e:
                     log(f"[ERROR] Android export error: {e}")
-                    self._show_error('خطا در ذخیره فایل')
+                    self._show_error(self._('save_file_error'))
                 return
 
             # دسکتاپ: انتخاب مسیر با FileChooser
@@ -3854,13 +4367,13 @@ class ReminderApp(App):
                         self._show_success(self._('export_success'))
                     except Exception as e:
                         log(f"[ERROR] Export save error: {e}")
-                        self._show_error('خطا در ذخیره فایل')
+                        self._show_error(self._('save_file_error'))
                 view.dismiss()
 
             view = ModalView(size_hint=(0.95, 0.8))
             box = BoxLayout(orientation='vertical', spacing=dp(8), padding=dp(10))
             box.add_widget(PersianLabel(
-                text='انتخاب مسیر برای ذخیره خروجی',
+                text=self._('export_path_hint'),
                 font_size='14sp',
                 color=(1, 1, 1, 1),
                 size_hint_y=None,
@@ -3892,7 +4405,7 @@ class ReminderApp(App):
 
         except Exception as e:
             log(f"[ERROR] export_data error: {e}")
-            self._show_error('خطا در خروجی گرفتن')
+            self._show_error(self._('export_error'))
 
     def import_data(self, instance):
         try:
@@ -3921,14 +4434,14 @@ class ReminderApp(App):
                             self._show_error(self._('import_error'))
                     except Exception as e:
                         log(f"[ERROR] Import load error: {e}")
-                        self._show_error('خطا در خواندن فایل')
+                        self._show_error(self._('import_read_error'))
                 view.dismiss()
 
             view = ModalView(size_hint=(0.95, 0.8))
             box = BoxLayout(orientation='vertical', spacing=dp(8), padding=dp(10))
-            hint = 'انتخاب فایل JSON برای ورودی (فایل‌های خروجی داخل همین پوشه)'
+            hint = self._('import_path_hint')
             if platform == 'android':
-                hint = 'فایل‌های خروجی برنامه در همین پوشه ذخیره می‌شوند\nیکی را انتخاب کنید'
+                hint = self._('import_path_hint_android')
             box.add_widget(PersianLabel(
                 text=hint,
                 font_size='13sp',
@@ -3962,20 +4475,24 @@ class ReminderApp(App):
 
         except Exception as e:
             log(f"[ERROR] import_data error: {e}")
-            self._show_error('خطا در ورودی گرفتن')
+            self._show_error(self._('import_error'))
 
     def show_about(self, *args):
         info = APP_INFO
         lines = [
-            f"{info['app_name']}  —  نسخه {info['version']}",
+            self._('about_line').format(
+                name=info['app_name'] if self.language == 'fa' else self._('app_name'),
+                version_label=self._('version_label'),
+                version=info['version'],
+            ),
             '',
-            f"سازنده: {info['developer']}",
-            f"ایمیل: {info['email']}",
-            f"بله: {info.get('bale', '@your_id')}",
-            '',
-            info['note'],
+            self._('about_dev').format(dev_label=self._('developer'), developer=info['developer']),
+            self._('about_email').format(email_label=self._('email_label'), email=info['email']),
+            self._('about_bale').format(bale_label=self._('bale_label'), bale=info.get('bale', '@your_id')),
         ]
         text = '\n'.join(lines)
+        # جمله پایانی حتماً در یک سطر
+        note_text = self._('about_note')
 
         box = BoxLayout(orientation='vertical', spacing=dp(10), padding=dp(14))
         box.add_widget(PersianLabel(
@@ -3985,6 +4502,15 @@ class ReminderApp(App):
             halign='center',
             valign='middle',
             size_hint_y=1,
+        ))
+        box.add_widget(PersianLabel(
+            text=note_text,
+            font_size='13sp',
+            color=(0.95, 0.95, 0.7, 1),
+            halign='center',
+            valign='middle',
+            size_hint_y=None,
+            height=dp(36),
         ))
         close_btn = PersianButton(
             text=self._('close'),
@@ -3999,7 +4525,7 @@ class ReminderApp(App):
         popup = Popup(
             title=reshape_persian(self._('about_title')),
             content=box,
-            size_hint=(0.88, 0.55),
+            size_hint=(0.90, 0.58),
             auto_dismiss=True,
             title_font='PersianFont',
             title_size='16sp',
@@ -4013,16 +4539,21 @@ class ReminderApp(App):
         popup.open()
 
     def _open_end_date_picker(self, end_date_btn):
-        """انتخاب تاریخ پایان تکرار — با امکان انتخاب روز/ماه/سال"""
+        """انتخاب تاریخ پایان تکرار — شمسی یا میلادی بر اساس زبان"""
         try:
             current = getattr(end_date_btn, 'selected_value', None)
-            if not current or not is_valid_jalali_date(str(current)):
-                # پیش‌فرض: دو سال بعد (مناسب برای اقساط)
+            if current:
+                current = storage_to_display_date(str(current), self.language)
+            if not current or not is_valid_date_for_lang(str(current), self.language):
                 try:
-                    ny, nm, nd, _, _ = now_jalali_tuple()
-                    current = f"{ny + 2:04d}/{nm:02d}/{min(nd, 28):02d}"
+                    if self.language == 'en':
+                        now = datetime.now()
+                        current = f"{now.year + 2:04d}/{now.month:02d}/{min(now.day, 28):02d}"
+                    else:
+                        ny, nm, nd, _, _ = now_jalali_tuple()
+                        current = f"{ny + 2:04d}/{nm:02d}/{min(nd, 28):02d}"
                 except Exception:
-                    current = get_default_date()
+                    current = get_default_date(self.language)
 
             box = BoxLayout(orientation='vertical', spacing=dp(6), padding=dp(8))
 
@@ -4030,9 +4561,10 @@ class ReminderApp(App):
                 end_date_btn.selected_value = date_str
                 end_date_btn.set_text(date_str)
 
-            calendar = JalaliCalendar(
+            calendar = make_date_calendar(
                 selected_date=current,
                 callback=calendar_callback,
+                lang=self.language,
                 size_hint_y=1,
             )
             box.add_widget(calendar)
@@ -4063,7 +4595,7 @@ class ReminderApp(App):
             box.add_widget(btn_row)
 
             picker = Popup(
-                title=reshape_persian('تاریخ پایان تکرار'),
+                title=reshape_persian(self._('end_date_title')),
                 content=box,
                 size_hint=(0.92, 0.82),
                 auto_dismiss=False,
@@ -4078,15 +4610,14 @@ class ReminderApp(App):
 
             def on_no_end(_inst):
                 end_date_btn.selected_value = None
-                end_date_btn.set_text('تاریخ پایان')
+                end_date_btn.set_text(self._('end_date_placeholder'))
                 picker.dismiss()
 
             def on_ok(_inst):
                 selected = getattr(end_date_btn, 'selected_value', None)
                 if not selected:
-                    # اگر هنوز انتخاب نشده، تاریخ فعلی تقویم را بگیر
                     selected = f"{calendar.current_year:04d}/{calendar.current_month:02d}/01"
-                if selected and not is_valid_jalali_date(selected):
+                if selected and not is_valid_date_for_lang(selected, self.language):
                     self._show_error(self._('invalid_date'))
                     return
                 end_date_btn.selected_value = selected
@@ -4102,11 +4633,17 @@ class ReminderApp(App):
 
     def _open_date_picker(self, date_btn):
         try:
-            current_date = getattr(date_btn, 'selected_value', get_default_date())
+            current_date = getattr(date_btn, 'selected_value', None)
+            if current_date:
+                current_date = storage_to_display_date(str(current_date), self.language)
+            else:
+                current_date = get_default_date(self.language)
             parts = current_date.replace('-', '/').split('/')
-            default_year = int(parts[0]) if len(parts) == 3 else int(get_default_date().split('/')[0])
-            default_month = int(parts[1]) if len(parts) == 3 else int(get_default_date().split('/')[1])
-            default_day = int(parts[2]) if len(parts) == 3 else int(get_default_date().split('/')[2])
+            default = get_default_date(self.language)
+            dparts = default.split('/')
+            default_year = int(parts[0]) if len(parts) == 3 else int(dparts[0])
+            default_month = int(parts[1]) if len(parts) == 3 else int(dparts[1])
+            default_day = int(parts[2]) if len(parts) == 3 else int(dparts[2])
 
             box = BoxLayout(orientation='vertical', spacing=dp(6), padding=dp(8))
 
@@ -4114,9 +4651,10 @@ class ReminderApp(App):
                 date_btn.selected_value = date_str
                 date_btn.set_text(date_str)
 
-            calendar = JalaliCalendar(
+            calendar = make_date_calendar(
                 selected_date=f"{default_year:04d}/{default_month:02d}/{default_day:02d}",
                 callback=calendar_callback,
+                lang=self.language,
                 size_hint_y=1,
             )
             box.add_widget(calendar)
@@ -4145,7 +4683,7 @@ class ReminderApp(App):
                 title_size='17sp',
                 title_color=(1, 1, 1, 1),
                 background='',
-                background_color=get_color_from_hex('#0D7377'),  # سبز هماهنگ با تقویم
+                background_color=get_color_from_hex('#0D7377'),
                 separator_color=get_color_from_hex('#FF7043'),
                 separator_height=dp(3),
             )
@@ -4155,7 +4693,7 @@ class ReminderApp(App):
                     selected = getattr(date_btn, 'selected_value', None)
                     if not selected:
                         selected = f"{calendar.current_year:04d}/{calendar.current_month:02d}/01"
-                    if not is_valid_jalali_date(selected):
+                    if not is_valid_date_for_lang(selected, self.language):
                         self._show_error(self._('invalid_date'))
                         return
                     date_btn.selected_value = selected
@@ -4218,7 +4756,7 @@ class ReminderApp(App):
 
             box = BoxLayout(orientation='vertical', spacing=dp(6), padding=dp(12))
             box.add_widget(PersianLabel(
-                text='دسته را انتخاب کنید',
+                text=self._('select_category'),
                 font_size='14sp',
                 color=(0.9, 0.9, 0.95, 1),
                 size_hint_y=None,
@@ -4230,7 +4768,7 @@ class ReminderApp(App):
             list_box.bind(minimum_height=list_box.setter('height'))
 
             picker = Popup(
-                title=reshape_persian('دسته‌بندی'),
+                title=reshape_persian(self._('category')),
                 content=box,
                 size_hint=(0.8, 0.6),
                 auto_dismiss=False,
@@ -4245,8 +4783,9 @@ class ReminderApp(App):
 
             for cat in options:
                 is_current = (cat == current)
+                display = translate_category(cat, self.language)
                 btn = PersianButton(
-                    text=cat + ('  ✓' if is_current else ''),
+                    text=display + ('  ✓' if is_current else ''),
                     background_color=get_color_from_hex('#00838F' if is_current else '#455A64'),
                     color=(1, 1, 1, 1),
                     size_hint_y=None,
@@ -4255,14 +4794,14 @@ class ReminderApp(App):
                     bold=is_current,
                 )
 
-                def make_handler(c):
+                def make_handler(c, disp):
                     def handler(_inst):
                         cat_btn.selected_value = c
-                        cat_btn.set_text(c)
+                        cat_btn.set_text(disp)
                         picker.dismiss()
                     return handler
 
-                btn.bind(on_press=make_handler(cat))
+                btn.bind(on_press=make_handler(cat, display))
                 list_box.add_widget(btn)
 
             scroll.add_widget(list_box)
@@ -4294,7 +4833,7 @@ class ReminderApp(App):
 
             box = BoxLayout(orientation='vertical', spacing=dp(8), padding=dp(12))
             box.add_widget(PersianLabel(
-                text='نوع تکرار را انتخاب کنید',
+                text=self._('select_repeat'),
                 font_size='14sp',
                 color=(0.9, 0.9, 0.95, 1),
                 size_hint_y=None,
@@ -4302,7 +4841,7 @@ class ReminderApp(App):
             ))
 
             picker = Popup(
-                title=reshape_persian('تکرار یادآوری'),
+                title=reshape_persian(self._('repeat_title')),
                 content=box,
                 size_hint=(0.8, 0.55),
                 auto_dismiss=False,
@@ -4354,7 +4893,7 @@ class ReminderApp(App):
     def show_add_reminder(self, instance):
         try:
             self._show_reminder_form(
-                title='', description='', date=get_default_date(), time=get_default_time(),
+                title='', description='', date=get_default_date_storage(), time=get_default_time(),
                 repeat_type='none', repeat_end_date=None, notify_before=15,
                 category='عمومی', is_edit=False, reminder_id=None
             )
@@ -4381,7 +4920,7 @@ class ReminderApp(App):
             )
         except Exception as e:
             log(f"[ERROR] show_edit_reminder error: {e}")
-            self._show_error('خطا در ویرایش یادآوری')
+            self._show_error(self._('edit_error'))
 
     def _show_reminder_form(self, title='', description='', date='', time='',
                             repeat_type='none', repeat_end_date=None, notify_before=15,
@@ -4418,11 +4957,11 @@ class ReminderApp(App):
 
             cat_row = BoxLayout(orientation='horizontal', spacing=dp(6), size_hint_y=None, height=dp(40))
             cat_row.add_widget(
-                PersianLabel(text='دسته‌بندی:', font_size='13sp',
+                PersianLabel(text=self._('category_label'), font_size='13sp',
                              color=(0.85, 0.85, 0.9, 1), size_hint_x=0.28)
             )
             cat_btn = PersianButton(
-                text=current_cat,
+                text=translate_category(current_cat, self.language),
                 background_color=get_color_from_hex('#00838F'),
                 color=(1, 1, 1, 1),
                 font_size='13sp',
@@ -4434,7 +4973,8 @@ class ReminderApp(App):
             form_content.add_widget(cat_row)
 
             datetime_row = BoxLayout(orientation='horizontal', spacing=dp(6), size_hint_y=None, height=dp(42))
-            default_date = date if date else get_default_date()
+            storage_date = date if date else get_default_date_storage()
+            default_date = storage_to_display_date(storage_date, self.language)
             default_time = time if time else get_default_time()
 
             date_btn = PersianButton(
@@ -4481,9 +5021,9 @@ class ReminderApp(App):
             )
             # دکمه انتخاب تاریخ پایان (اگر خالی باشد متن «تاریخ پایان» نشان می‌دهد)
             if repeat_end_date:
-                end_date_text = repeat_end_date
+                end_date_text = storage_to_display_date(repeat_end_date, self.language)
             else:
-                end_date_text = 'تاریخ پایان'
+                end_date_text = self._('end_date_placeholder')
             end_date_btn = PersianButton(
                 text=end_date_text,
                 background_color=get_color_from_hex('#00838F'),
@@ -4504,7 +5044,7 @@ class ReminderApp(App):
             )
             def clear_end(_inst):
                 end_date_btn.selected_value = None
-                end_date_btn.set_text('تاریخ پایان')
+                end_date_btn.set_text(self._('end_date_placeholder'))
             clear_end_btn.bind(on_press=clear_end)
             end_date_row.add_widget(clear_end_btn)
             form_content.add_widget(end_date_row)
@@ -4552,12 +5092,14 @@ class ReminderApp(App):
 
                     date_val = getattr(date_btn, 'selected_value', default_date)
                     time_val = getattr(time_btn, 'selected_value', default_time)
-                    if not is_valid_jalali_date(date_val):
+                    if not is_valid_date_for_lang(date_val, self.language):
                         self._show_error(self._('invalid_date'))
                         return
                     if not is_valid_time(time_val):
                         self._show_error(self._('invalid_time'))
                         return
+                    # تبدیل تاریخ نمایشی به شمسی برای ذخیره
+                    date_val = display_to_storage_date(date_val, self.language)
 
                     desc_val = desc_input.value
                     notify_val = 0  # اعلان قبل حذف شده؛ در زمان مقرر هشدار می‌دهد
@@ -4571,9 +5113,11 @@ class ReminderApp(App):
                     end_date = getattr(end_date_btn, 'selected_value', None)
                     if end_date == self._('no_end') or not end_date:
                         end_date = None
-                    elif end_date and not is_valid_jalali_date(end_date):
-                        self._show_error('تاریخ پایان نامعتبر است')
-                        return
+                    elif end_date:
+                        if not is_valid_date_for_lang(end_date, self.language):
+                            self._show_error(self._('invalid_end_date'))
+                            return
+                        end_date = display_to_storage_date(end_date, self.language)
 
                     if is_edit and reminder_id:
                         self._notified_ids.discard(reminder_id)
@@ -4591,7 +5135,7 @@ class ReminderApp(App):
                             category=cat_val,
                         )
                         if not result:
-                            self._show_error('خطا در ویرایش یادآوری')
+                            self._show_error(self._('edit_error'))
                             return
                         success_msg = self._('reminder_updated')
                     else:
@@ -4601,7 +5145,7 @@ class ReminderApp(App):
                             category=cat_val,
                         )
                         if not result:
-                            self._show_error('خطا در افزودن یادآوری')
+                            self._show_error(self._('add_error'))
                             return
                         success_msg = self._('reminder_added')
 
@@ -4610,14 +5154,14 @@ class ReminderApp(App):
                     self._show_success(success_msg)
                 except Exception as e:
                     log(f"[ERROR] save_reminder error: {e}")
-                    self._show_error('خطا در ذخیره یادآوری')
+                    self._show_error(self._('save_error'))
 
             cancel_btn.bind(on_press=popup.dismiss)
             save_btn.bind(on_press=save_reminder)
             popup.open()
         except Exception as e:
             log(f"[ERROR] _show_reminder_form error: {e}")
-            self._show_error('خطا در نمایش فرم')
+            self._show_error(self._('form_error'))
 
 
 if __name__ == '__main__':
