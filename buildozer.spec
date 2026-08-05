@@ -6,7 +6,7 @@ source.dir = .
 source.include_exts = py,png,jpg,jpeg,kv,atlas,ttf,json,db
 version = 1.0
 
-requirements = python3,kivy==2.3.1,kivymd==1.1.1
+requirements = python3,kivy==2.3.1,kivymd==1.2.0
 
 orientation = portrait
 fullscreen = 0
@@ -19,7 +19,7 @@ android.minapi = 26
 android.archs = arm64-v8a
 android.enable_androidx = True
 android.accept_sdk_license = True
-
+p4a.branch = stable
 # Permissions
 android.permissions = VIBRATE,WAKE_LOCK,POST_NOTIFICATIONS
 
