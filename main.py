@@ -1,5 +1,5 @@
 # ==================================================
-# main.py - نسخه نهایی با سیستم اعتبارسنجی - آماده برای اندروید
+# main.py - نسخه نهایی با سیستم اعتبارسنجی - آماده برای اندروید و ویندوز
 # ==================================================
 #
 # برای ساخت APK با Buildozer این وابستگی‌ها را در buildozer.spec قرار دهید:
@@ -18,8 +18,6 @@ import shutil
 import json
 from datetime import datetime, timedelta
 import jdatetime
-import hashlib
-import base64
 
 # تنظیمات OpenGL فقط برای ویندوز
 if sys.platform == 'win32':
@@ -46,7 +44,7 @@ import arabic_reshaper
 from bidi.algorithm import get_display
 
 # برای فعال کردن لاگ‌ها در کنسول، True کنید
-DEBUG = False
+DEBUG = True
 
 def log(msg):
     if DEBUG:
@@ -106,94 +104,133 @@ except ImportError:
 # ==================================================
 THEMES = {
     'light': {
-        'window_bg': '#EEF1F6',
-        'header_title': (0.15, 0.15, 0.35, 1),
-        'card_bg': (0.98, 0.98, 0.99, 1),
-        'card_bg_done': (0.92, 0.92, 0.93, 1),
-        'card_bg_today': (1.0, 0.97, 0.90, 1),
-        'card_bg_overdue': (1.0, 0.92, 0.90, 1),
-        'title_color': (0.2, 0.2, 0.25, 1),
-        'title_color_done': (0.55, 0.55, 0.55, 1),
-        'desc_color': (0.4, 0.4, 0.45, 1),
-        'desc_color_done': (0.6, 0.6, 0.6, 1),
-        'info_color': (0.45, 0.45, 0.5, 1),
-        'empty_color': (0.5, 0.5, 0.55, 1),
-        'search_hint': (0.55, 0.55, 0.6, 1),
+        # پس‌زمینه ملایم آبی-خاکستری برای کنتراست بهتر با کارت سفید
+        'window_bg': '#E8EDF5',
+        'header_title': (0.12, 0.16, 0.28, 1),
+        'card_bg': (1.0, 1.0, 1.0, 1),
+        'card_bg_done': (0.94, 0.95, 0.96, 1),
+        'card_bg_today': (1.0, 0.96, 0.88, 1),
+        'card_bg_overdue': (1.0, 0.93, 0.91, 1),
+        # متن اصلی تیره برای خوانایی بالا
+        'title_color': (0.10, 0.12, 0.18, 1),
+        'title_color_done': (0.48, 0.50, 0.54, 1),
+        'desc_color': (0.28, 0.32, 0.38, 1),
+        'desc_color_done': (0.55, 0.57, 0.60, 1),
+        'info_color': (0.35, 0.40, 0.48, 1),
+        'empty_color': (0.42, 0.46, 0.52, 1),
+        'search_hint': (0.50, 0.54, 0.60, 1),
         'input_bg': (1, 1, 1, 1),
-        'input_fg': (0.1, 0.1, 0.1, 1),
-        'popup_bg': (0.18, 0.18, 0.22, 1),
+        'input_fg': (0.08, 0.10, 0.14, 1),
+        'popup_bg': (0.14, 0.16, 0.22, 1),
         'popup_title': (1, 1, 1, 1),
-        'alert_bg': (0.15, 0.12, 0.08, 1),
-        'badge_today': '#FF8F00',
-        'badge_overdue': '#E53935',
+        'alert_bg': (0.12, 0.14, 0.10, 1),
+        'badge_today': '#EF6C00',
+        'badge_overdue': '#D32F2F',
         'calendar_bg': (1, 1, 1, 1),
-        'calendar_day': (0.1, 0.1, 0.1, 1),
+        'calendar_day': (0.08, 0.10, 0.14, 1),
         'calendar_selected': '#1565C0',
-        'calendar_today': '#FF6F00',
+        'calendar_today': '#EF6C00',
+        'accent': '#1B5E20',
+        'accent_soft': '#E8F5E9',
     },
     'dark': {
-        'window_bg': '#121212',
-        'header_title': (0.9, 0.9, 0.95, 1),
-        'card_bg': (0.18, 0.18, 0.20, 1),
-        'card_bg_done': (0.14, 0.14, 0.15, 1),
-        'card_bg_today': (0.28, 0.22, 0.12, 1),
-        'card_bg_overdue': (0.30, 0.14, 0.14, 1),
-        'title_color': (0.92, 0.92, 0.95, 1),
-        'title_color_done': (0.55, 0.55, 0.58, 1),
-        'desc_color': (0.7, 0.7, 0.75, 1),
-        'desc_color_done': (0.5, 0.5, 0.52, 1),
-        'info_color': (0.6, 0.6, 0.65, 1),
-        'empty_color': (0.55, 0.55, 0.6, 1),
-        'search_hint': (0.5, 0.5, 0.55, 1),
-        'input_bg': (0.25, 0.25, 0.28, 1),
-        'input_fg': (0.95, 0.95, 0.95, 1),
-        'popup_bg': (0.15, 0.15, 0.18, 1),
-        'popup_title': (0.95, 0.95, 0.95, 1),
-        'alert_bg': (0.12, 0.10, 0.08, 1),
-        'badge_today': '#FFB300',
+        'window_bg': '#0F1115',
+        'header_title': (0.95, 0.96, 0.98, 1),
+        'card_bg': (0.16, 0.17, 0.20, 1),
+        'card_bg_done': (0.12, 0.13, 0.14, 1),
+        'card_bg_today': (0.26, 0.22, 0.12, 1),
+        'card_bg_overdue': (0.28, 0.14, 0.14, 1),
+        'title_color': (0.96, 0.96, 0.98, 1),
+        'title_color_done': (0.58, 0.60, 0.64, 1),
+        'desc_color': (0.78, 0.80, 0.84, 1),
+        'desc_color_done': (0.52, 0.54, 0.56, 1),
+        'info_color': (0.68, 0.70, 0.74, 1),
+        'empty_color': (0.60, 0.62, 0.66, 1),
+        'search_hint': (0.55, 0.58, 0.62, 1),
+        'input_bg': (0.22, 0.24, 0.28, 1),
+        'input_fg': (0.96, 0.96, 0.98, 1),
+        'popup_bg': (0.12, 0.13, 0.16, 1),
+        'popup_title': (0.96, 0.96, 0.98, 1),
+        'alert_bg': (0.10, 0.11, 0.08, 1),
+        'badge_today': '#FFB74D',
         'badge_overdue': '#EF5350',
-        'calendar_bg': (0.2, 0.2, 0.22, 1),
-        'calendar_day': (0.9, 0.9, 0.9, 1),
-        'calendar_selected': '#1565C0',
-        'calendar_today': '#FFB300',
+        'calendar_bg': (0.18, 0.19, 0.22, 1),
+        'calendar_day': (0.94, 0.94, 0.96, 1),
+        'calendar_selected': '#42A5F5',
+        'calendar_today': '#FFB74D',
+        'accent': '#66BB6A',
+        'accent_soft': (0.12, 0.20, 0.14, 1),
     }
 }
 
 # ==================================================
-# فونت فارسی (Thin برای متن عادی، ExtraBold برای بخش‌های مهم)
+# فونت فارسی — اولویت با Regular/Medium برای خوانایی، Bold برای عناوین
 # ==================================================
 _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-_FONT_THIN = os.path.join(_BASE_DIR, 'fonts', 'Vazirmatn-Thin.ttf')
-_FONT_BOLD = os.path.join(_BASE_DIR, 'fonts', 'Vazirmatn-ExtraBold.ttf')
-_FONT_FALLBACKS = [
-    os.path.join(_BASE_DIR, 'fonts', 'Vazirmatn.ttf'),
-    os.path.join(_BASE_DIR, 'fonts', 'IRANSans.ttf'),
+
+def _pick_font(candidates):
+    """اولین فایل فونت موجود را برمی‌گرداند"""
+    for p in candidates:
+        if p and os.path.exists(p):
+            return p
+    return None
+
+# مسیر پایه فونت‌ها
+if platform == 'android':
+    try:
+        from android import mActivity
+        _ASSETS_DIR = os.path.join(os.path.dirname(mActivity.getPackageCodePath()), 'assets')
+        _FONTS_DIR = os.path.join(_ASSETS_DIR, 'fonts')
+    except Exception:
+        _FONTS_DIR = os.path.join(_BASE_DIR, 'fonts')
+else:
+    _FONTS_DIR = os.path.join(_BASE_DIR, 'fonts')
+
+# ترتیب اولویت: Regular/Medium خواناتر از Thin هستند
+_REGULAR_CANDIDATES = [
+    os.path.join(_FONTS_DIR, 'Vazirmatn-Regular.ttf'),
+    os.path.join(_FONTS_DIR, 'Vazirmatn-Medium.ttf'),
+    os.path.join(_FONTS_DIR, 'Vazirmatn.ttf'),
+    os.path.join(_FONTS_DIR, 'Vazirmatn-Thin.ttf'),  # آخرین انتخاب
+    os.path.join(_BASE_DIR, 'fonts', 'Vazirmatn-Regular.ttf'),
+    os.path.join(_BASE_DIR, 'fonts', 'Vazirmatn-Medium.ttf'),
+    os.path.join(_BASE_DIR, 'fonts', 'Vazirmatn-Thin.ttf'),
     '/system/fonts/NotoNaskhArabic-Regular.ttf',
     '/system/fonts/NotoSansArabic-Regular.ttf',
-    '/system/fonts/DroidSans.ttf',
+    '/system/fonts/DroidNaskh-Regular.ttf',
     '/system/fonts/Roboto-Regular.ttf',
-    'Arial',
+]
+_BOLD_CANDIDATES = [
+    os.path.join(_FONTS_DIR, 'Vazirmatn-Bold.ttf'),
+    os.path.join(_FONTS_DIR, 'Vazirmatn-ExtraBold.ttf'),
+    os.path.join(_FONTS_DIR, 'Vazirmatn-SemiBold.ttf'),
+    os.path.join(_BASE_DIR, 'fonts', 'Vazirmatn-Bold.ttf'),
+    os.path.join(_BASE_DIR, 'fonts', 'Vazirmatn-ExtraBold.ttf'),
+    '/system/fonts/NotoNaskhArabic-Bold.ttf',
+    '/system/fonts/Roboto-Bold.ttf',
 ]
 
+# پوشه داده‌های برنامه برای اندروید
+_USER_DATA_DIR = None
+if platform == 'android':
+    try:
+        from android.storage import app_storage_path
+        _USER_DATA_DIR = app_storage_path()
+        log(f"[OK] Android storage path: {_USER_DATA_DIR}")
+    except Exception as e:
+        log(f"[WARN] Could not get Android storage path: {e}")
+
 try:
-    # فونت عادی (Thin)
-    thin_path = None
-    if os.path.exists(_FONT_THIN):
-        thin_path = _FONT_THIN
-    else:
-        for p in _FONT_FALLBACKS:
-            if os.path.exists(p):
-                thin_path = p
-                break
-    if thin_path:
-        LabelBase.register(name='PersianFont', fn_regular=thin_path)
-        log(f"[OK] PersianFont (regular): {thin_path}")
+    regular_path = _pick_font(_REGULAR_CANDIDATES)
+    bold_path = _pick_font(_BOLD_CANDIDATES) or regular_path
+
+    if regular_path:
+        LabelBase.register(name='PersianFont', fn_regular=regular_path)
+        log(f"[OK] PersianFont: {regular_path}")
     else:
         LabelBase.register(name='PersianFont', fn_regular='Arial')
         log("[WARN] PersianFont fallback to Arial")
 
-    # فونت ضخیم (ExtraBold) برای عناوین و بخش‌های مهم
-    bold_path = _FONT_BOLD if os.path.exists(_FONT_BOLD) else thin_path
     if bold_path:
         LabelBase.register(name='PersianFontBold', fn_regular=bold_path)
         log(f"[OK] PersianFontBold: {bold_path}")
@@ -696,6 +733,8 @@ class Database:
             conn.close()
 
     def _cleanup_old_backups(self):
+        """پاک‌سازی بکاپ‌های قدیمی دیتابیس"""
+        removed = 0
         try:
             backups = []
             for f in os.listdir(self.data_dir):
@@ -710,11 +749,57 @@ class Database:
             for _, path in backups[self.MAX_BACKUPS:]:
                 try:
                     os.remove(path)
+                    removed += 1
                     log(f"[OK] Old backup removed: {path}")
                 except OSError as e:
                     log(f"[WARN] Could not remove backup {path}: {e}")
         except Exception as e:
             log(f"[WARN] Backup cleanup error: {e}")
+        return removed
+
+    def cleanup_extra_files(self, max_age_days=14, max_exports=5):
+        """
+        پاک‌سازی خودکار فایل‌های اضافی:
+        - بکاپ‌های قدیمی دیتابیس (بیش از MAX_BACKUPS)
+        - فایل‌های خروجی JSON قدیمی (yadavar_export_*)
+        برمی‌گرداند تعداد فایل‌های حذف‌شده
+        """
+        removed = 0
+        try:
+            removed += self._cleanup_old_backups() or 0
+        except Exception:
+            pass
+
+        try:
+            now = datetime.now().timestamp()
+            max_age_sec = max_age_days * 24 * 3600
+            exports = []
+            for f in os.listdir(self.data_dir):
+                if f.startswith('yadavar_export_') and f.endswith('.json'):
+                    full = os.path.join(self.data_dir, f)
+                    try:
+                        mtime = os.path.getmtime(full)
+                        # حذف فایل‌های خیلی قدیمی
+                        if now - mtime > max_age_sec:
+                            os.remove(full)
+                            removed += 1
+                            log(f"[OK] Old export removed: {full}")
+                        else:
+                            exports.append((mtime, full))
+                    except OSError as e:
+                        log(f"[WARN] Could not process export {full}: {e}")
+            # نگه داشتن فقط آخرین max_exports
+            exports.sort(key=lambda x: x[0], reverse=True)
+            for _, path in exports[max_exports:]:
+                try:
+                    os.remove(path)
+                    removed += 1
+                    log(f"[OK] Extra export removed: {path}")
+                except OSError as e:
+                    log(f"[WARN] Could not remove export {path}: {e}")
+        except Exception as e:
+            log(f"[WARN] Export cleanup error: {e}")
+        return removed
 
     def backup(self, force=False):
         if not force:
@@ -1301,8 +1386,6 @@ class JalaliCalendar(BoxLayout):
     def next_year(self, instance):
         self.current_year += 1
         self.build_calendar()
-
-
 
 
 # ==================================================
@@ -1934,18 +2017,24 @@ class SettingsManager:
 
 
 # ==================================================
-# اپلیکیشن اصلی - اصلاح شده برای اندروید
+# اپلیکیشن اصلی - اصلاح شده برای اندروید و ویندوز
 # ==================================================
 class ReminderApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # دریافت مسیر ذخیره‌سازی داده‌ها (روی اندروید: /data/data/.../files)
-        self.data_dir = self.user_data_dir
+        
+        # دریافت مسیر ذخیره‌سازی داده‌ها
+        if platform == 'android' and _USER_DATA_DIR:
+            self.data_dir = _USER_DATA_DIR
+        else:
+            self.data_dir = self.user_data_dir
+            
+        # اطمینان از وجود پوشه
         try:
             os.makedirs(self.data_dir, exist_ok=True)
             log(f"[OK] Data directory: {self.data_dir}")
         except Exception as e:
-            log(f"[WARN] Could not create user_data_dir ({e}), using local dir")
+            log(f"[WARN] Could not create data dir ({e}), using local dir")
             self.data_dir = os.path.dirname(os.path.abspath(__file__))
             try:
                 os.makedirs(self.data_dir, exist_ok=True)
@@ -1984,15 +2073,12 @@ class ReminderApp(App):
         if platform == 'android':
             self.request_android_permissions()
             try:
-                # کیبورد سیستم برای ورودی فارسی بهتر کار می‌کند
                 from kivy.config import Config
                 Config.set('kivy', 'keyboard_mode', 'system')
             except Exception:
                 pass
             try:
-                # جلوگیری از قطع شدن برنامه هنگام چرخش صفحه (اختیاری)
                 from android import mActivity
-                # orientation را در buildozer.spec تنظیم کنید: orientation = portrait
             except Exception:
                 pass
         
@@ -2016,13 +2102,13 @@ class ReminderApp(App):
             font_size='17sp',
             color=self.theme['header_title'],
             bold=True,
-            size_hint_x=0.30,
+            size_hint_x=0.48,
         )
         header.add_widget(self.title_label)
 
         add_btn = PersianButton(
             text=self._('add'),
-            size_hint_x=0.18,
+            size_hint_x=0.26,
             background_color=get_color_from_hex('#2E7D32'),
             color=(1, 1, 1, 1),
             font_size='13sp',
@@ -2033,7 +2119,7 @@ class ReminderApp(App):
 
         settings_btn = PersianButton(
             text=self._('settings'),
-            size_hint_x=0.18,
+            size_hint_x=0.26,
             background_color=get_color_from_hex('#455A64'),
             color=(1, 1, 1, 1),
             font_size='12sp',
@@ -2041,15 +2127,7 @@ class ReminderApp(App):
         settings_btn.bind(on_press=self.show_settings)
         header.add_widget(settings_btn)
 
-        clear_search_btn = PersianButton(
-            text=self._('clear'),
-            size_hint_x=0.12,
-            background_color=get_color_from_hex('#78909C'),
-            color=(1, 1, 1, 1),
-            font_size='12sp',
-        )
-        clear_search_btn.bind(on_press=self.clear_search)
-        header.add_widget(clear_search_btn)
+        # دکمه «پاک» از هدر حذف شد (طبق درخواست کاربر)
 
         self.root_layout.add_widget(header)
 
@@ -2064,7 +2142,7 @@ class ReminderApp(App):
             hint_text=self._('search_hint'),
             multiline=False,
             size_hint_x=1,
-            font_size='14sp',
+            font_size='15sp',
         )
         self.search_input.apply_theme(self.theme)
         self.search_input.bind(text=self.on_search_text)
@@ -2118,7 +2196,7 @@ class ReminderApp(App):
                 text=label,
                 background_color=get_color_from_hex(self.filter_colors[ftype]),
                 color=(1, 1, 1, 1),
-                font_size='12sp',
+                font_size='13sp',
             )
             btn.bind(on_press=lambda inst, ft=ftype: self.filter_reminders(ft))
             self.filter_buttons[ftype] = btn
@@ -2129,7 +2207,7 @@ class ReminderApp(App):
                 text=label,
                 background_color=get_color_from_hex(self.filter_colors[ftype]),
                 color=(1, 1, 1, 1),
-                font_size='12sp',
+                font_size='13sp',
             )
             btn.bind(on_press=lambda inst, ft=ftype: self.filter_reminders(ft))
             self.filter_buttons[ftype] = btn
@@ -2189,8 +2267,88 @@ class ReminderApp(App):
         self.load_reminders()
         
         Clock.schedule_once(self.check_license, 0.5)
+        # پاک‌سازی خودکار فایل‌های اضافی بعد از شروع
+        Clock.schedule_once(self._run_auto_cleanup, 2.0)
+        # فعال‌سازی اجرای خودکار در ویندوز (یک‌بار)
+        if sys.platform == 'win32':
+            Clock.schedule_once(self._ensure_windows_autostart, 1.5)
         
         return self.root_layout
+
+    def _ensure_windows_autostart(self, dt):
+        """اگر هنوز فعال نشده، اجرای خودکار با ویندوز را فعال کن"""
+        try:
+            if not self.is_autostart_enabled():
+                if self.set_autostart(True):
+                    log("[OK] Windows autostart enabled on first run")
+        except Exception as e:
+            log(f"[WARN] _ensure_windows_autostart: {e}")
+
+    def _run_auto_cleanup(self, dt):
+        """پاک‌سازی خودکار بکاپ‌ها و فایل‌های خروجی قدیمی"""
+        try:
+            removed = self.db.cleanup_extra_files(max_age_days=14, max_exports=5)
+            if removed > 0:
+                msg = f'{removed} فایل اضافی پاک شد' if self.language == 'fa' else f'{removed} extra file(s) cleaned'
+                self._show_success(msg)
+                log(f"[OK] Auto-cleanup removed {removed} file(s)")
+        except Exception as e:
+            log(f"[WARN] Auto-cleanup error: {e}")
+
+    # --------------------------------------------------
+    # اجرا در استارت‌آپ (ویندوز) / پیشنهاد برای اندروید
+    # --------------------------------------------------
+    def _windows_startup_path(self):
+        """مسیر پوشه Startup ویندوز"""
+        try:
+            startup = os.path.join(
+                os.environ.get('APPDATA', ''),
+                r'Microsoft\Windows\Start Menu\Programs\Startup'
+            )
+            if os.path.isdir(startup):
+                return startup
+        except Exception:
+            pass
+        return None
+
+    def is_autostart_enabled(self):
+        if sys.platform != 'win32':
+            return False
+        startup = self._windows_startup_path()
+        if not startup:
+            return False
+        return os.path.exists(os.path.join(startup, 'Yadavar.bat'))
+
+    def set_autostart(self, enable=True):
+        """فعال/غیرفعال کردن اجرای خودکار در ویندوز"""
+        if sys.platform != 'win32':
+            return False
+        startup = self._windows_startup_path()
+        if not startup:
+            return False
+        bat_path = os.path.join(startup, 'Yadavar.bat')
+        try:
+            if enable:
+                # مسیر اجرای برنامه
+                if getattr(sys, 'frozen', False):
+                    exe = sys.executable
+                    cmd = f'@echo off\r\nstart "" "{exe}"\r\n'
+                else:
+                    script = os.path.abspath(sys.argv[0] if sys.argv else __file__)
+                    py = sys.executable
+                    cmd = f'@echo off\r\nstart "" "{py}" "{script}"\r\n'
+                with open(bat_path, 'w', encoding='utf-8') as f:
+                    f.write(cmd)
+                log(f"[OK] Autostart enabled: {bat_path}")
+                return True
+            else:
+                if os.path.exists(bat_path):
+                    os.remove(bat_path)
+                    log("[OK] Autostart disabled")
+                return True
+        except Exception as e:
+            log(f"[WARN] set_autostart error: {e}")
+            return False
 
     def request_android_permissions(self):
         """درخواست مجوزهای لازم برای اندروید"""
@@ -2200,16 +2358,13 @@ class ReminderApp(App):
             from android.permissions import request_permissions, Permission
             from android import api_version
             perms = [Permission.VIBRATE]
-            # Android 13+ (API 33) needs explicit notification permission
             if api_version >= 33:
                 perms.append(Permission.POST_NOTIFICATIONS)
-            # Older Android needs storage for file export/import
             if api_version < 30:
                 perms.extend([
                     Permission.WRITE_EXTERNAL_STORAGE,
                     Permission.READ_EXTERNAL_STORAGE,
                 ])
-            # Android 10-12 sometimes still needs legacy storage for FileChooser
             if 29 <= api_version < 33:
                 try:
                     perms.append(Permission.READ_EXTERNAL_STORAGE)
@@ -2329,14 +2484,6 @@ class ReminderApp(App):
         )
         popup.open()
         Clock.schedule_once(lambda dt: popup.dismiss(), 2)
-
-    def clear_search(self, instance):
-        try:
-            self.search_input.value = ''
-            self.search_query = ''
-            self.load_reminders()
-        except Exception as e:
-            log(f"[ERROR] clear_search error: {e}")
 
     def on_search_text(self, instance, value):
         try:
@@ -2490,7 +2637,7 @@ class ReminderApp(App):
 
                     title_lbl = PersianLabel(
                         text=display_title,
-                        font_size='16sp',
+                        font_size='17sp',
                         color=self.theme['title_color_done'] if is_done else self.theme['title_color'],
                         halign='right',
                         size_hint_x=1,
@@ -2502,8 +2649,8 @@ class ReminderApp(App):
                     if description_text:
                         desc_lbl = PersianLabel(
                             text=description_text,
-                            font_size='13sp',
-                            color=get_color_from_hex('#43A047') if not is_done else self.theme['desc_color_done'],
+                            font_size='14sp',
+                            color=self.theme['desc_color_done'] if is_done else self.theme['desc_color'],
                             halign='right',
                             size_hint_y=None,
                             height=dp(desc_height),
@@ -2514,8 +2661,8 @@ class ReminderApp(App):
                     # دسته
                     cat_lbl = PersianLabel(
                         text=category,
-                        font_size='12sp',
-                        color=get_color_from_hex('#00897B'),
+                        font_size='13sp',
+                        color=get_color_from_hex('#00796B'),
                         halign='right',
                         size_hint_y=None,
                         height=dp(cat_height),
@@ -2528,7 +2675,7 @@ class ReminderApp(App):
                         st_color = self.theme['badge_today'] if status == 'today' else self.theme['badge_overdue']
                         st_lbl = PersianLabel(
                             text=st_text,
-                            font_size='11sp',
+                            font_size='12sp',
                             color=get_color_from_hex(st_color),
                             size_hint_y=None,
                             height=dp(18),
@@ -2540,15 +2687,15 @@ class ReminderApp(App):
                     btn_row = BoxLayout(
                         orientation='horizontal',
                         size_hint_y=None,
-                        height=dp(36),
+                        height=dp(38),
                         spacing=dp(6),
                     )
                     time_btn = PersianButton(
                         text=f'🕒 {time_text}',
                         size_hint_x=0.34,
-                        background_color=get_color_from_hex('#43A047'),
+                        background_color=get_color_from_hex('#2E7D32'),
                         color=(1, 1, 1, 1),
-                        font_size='12sp',
+                        font_size='13sp',
                     )
                     # فقط نمایش — با کلیک ویرایش باز شود
                     time_btn.bind(on_press=lambda inst, r=rid: self.show_edit_reminder(r))
@@ -2556,18 +2703,18 @@ class ReminderApp(App):
                     edit_btn = PersianButton(
                         text=self._('edit'),
                         size_hint_x=0.33,
-                        background_color=(0.95, 1, 0.95, 1),
-                        color=get_color_from_hex('#2E7D32'),
-                        font_size='12sp',
+                        background_color=get_color_from_hex('#E8F5E9'),
+                        color=get_color_from_hex('#1B5E20'),
+                        font_size='13sp',
                     )
                     edit_btn.bind(on_press=lambda inst, r=rid: self.show_edit_reminder(r))
 
                     delete_btn = PersianButton(
                         text=self._('delete'),
                         size_hint_x=0.33,
-                        background_color=(1, 0.95, 0.95, 1),
-                        color=get_color_from_hex('#E53935'),
-                        font_size='12sp',
+                        background_color=get_color_from_hex('#FFEBEE'),
+                        color=get_color_from_hex('#C62828'),
+                        font_size='13sp',
                     )
                     delete_btn.bind(on_press=lambda inst, r=rid: self._delete(r))
 
@@ -2739,13 +2886,14 @@ class ReminderApp(App):
                 self.category_buttons[cat] = btn
                 self.category_row.add_widget(btn)
 
+            # دکمه سبز افزودن دسته با علامت +
             add_cat_btn = PersianButton(
-                text='＋',
+                text='+',
                 size_hint=(None, None),
-                size=(dp(36), dp(34)),
+                size=(dp(40), dp(38)),
                 background_color=get_color_from_hex('#2E7D32'),
                 color=(1, 1, 1, 1),
-                font_size='16sp',
+                font_size='22sp',
                 bold=True,
             )
             add_cat_btn.background_normal = ''
@@ -3479,6 +3627,80 @@ class ReminderApp(App):
         lang_row.add_widget(en_btn)
         settings_form.add_widget(lang_row)
 
+        # اجرای خودکار در استارت‌آپ (ویندوز) + پاک‌سازی فایل‌های اضافی
+        auto_row = BoxLayout(
+            orientation='horizontal',
+            size_hint_y=None,
+            height=dp(40),
+            spacing=dp(8),
+        )
+        auto_enabled = [self.is_autostart_enabled()]
+        auto_label = 'اجرا با ویندوز' if self.language == 'fa' else 'Start with Windows'
+        if platform == 'android':
+            auto_label = 'اجرا در پس‌زمینه' if self.language == 'fa' else 'Background run'
+        auto_btn = PersianButton(
+            text=auto_label + (' ✓' if auto_enabled[0] else ''),
+            background_color=get_color_from_hex('#1565C0' if auto_enabled[0] else '#546E7A'),
+            color=(1, 1, 1, 1),
+            font_size='12sp',
+            size_hint_x=0.55,
+        )
+
+        def toggle_autostart(_inst):
+            if platform == 'android':
+                # در اندروید اجرای واقعی با بوت نیاز به سرویس دارد؛ فقط راهنما
+                tip = (
+                    'برای اجرای خودکار در اندروید:\n'
+                    'تنظیمات گوشی → برنامه‌ها → یادآور → باتری → بدون محدودیت'
+                    if self.language == 'fa' else
+                    'For Android auto-start:\nSettings → Apps → Yadavar → Battery → Unrestricted'
+                )
+                self._show_success(tip)
+                return
+            new_state = not auto_enabled[0]
+            if self.set_autostart(new_state):
+                auto_enabled[0] = new_state
+                auto_btn.background_color = get_color_from_hex('#1565C0' if new_state else '#546E7A')
+                auto_btn.set_text(auto_label + (' ✓' if new_state else ''))
+                msg = (
+                    'اجرای خودکار فعال شد' if new_state else 'اجرای خودکار غیرفعال شد'
+                ) if self.language == 'fa' else (
+                    'Autostart enabled' if new_state else 'Autostart disabled'
+                )
+                self._show_success(msg)
+            else:
+                self._show_error('خطا در تنظیم اجرای خودکار' if self.language == 'fa' else 'Autostart error')
+
+        auto_btn.bind(on_press=toggle_autostart)
+        auto_row.add_widget(auto_btn)
+
+        cleanup_btn = PersianButton(
+            text='پاک‌سازی فایل‌ها' if self.language == 'fa' else 'Clean files',
+            background_color=get_color_from_hex('#6A1B9A'),
+            color=(1, 1, 1, 1),
+            font_size='12sp',
+            size_hint_x=0.45,
+        )
+
+        def do_manual_cleanup(_inst):
+            try:
+                n = self.db.cleanup_extra_files(max_age_days=7, max_exports=3)
+                if n > 0:
+                    self._show_success(
+                        f'{n} فایل اضافی پاک شد' if self.language == 'fa' else f'{n} file(s) cleaned'
+                    )
+                else:
+                    self._show_success(
+                        'فایل اضافی برای پاک کردن نبود' if self.language == 'fa' else 'No extra files'
+                    )
+            except Exception as e:
+                log(f"[ERROR] manual cleanup: {e}")
+                self._show_error('خطا در پاک‌سازی')
+
+        cleanup_btn.bind(on_press=do_manual_cleanup)
+        auto_row.add_widget(cleanup_btn)
+        settings_form.add_widget(auto_row)
+
         # دکمه‌های خروجی و ورودی
         io_row = BoxLayout(
             orientation='horizontal',
@@ -3789,24 +4011,6 @@ class ReminderApp(App):
         )
         close_btn.bind(on_press=popup.dismiss)
         popup.open()
-
-    def _make_spinner(self, values, default, height=dp(44)):
-        try:
-            return Spinner(
-                text=str(default),
-                values=[str(v) for v in values],
-                font_name='PersianFont',
-                size_hint_y=None,
-                height=height,
-                background_normal='',
-                background_color=get_color_from_hex('#ECEFF1'),
-                color=(0.15, 0.15, 0.15, 1),
-                font_size='15sp',
-            )
-        except Exception as e:
-            log(f"[ERROR] _make_spinner error: {e}")
-            return Spinner(text=str(default))
-
 
     def _open_end_date_picker(self, end_date_btn):
         """انتخاب تاریخ پایان تکرار — با امکان انتخاب روز/ماه/سال"""
