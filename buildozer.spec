@@ -17,9 +17,12 @@ presplash.filename = data/presplash.png
 android.api = 34
 android.minapi = 26
 android.archs = arm64-v8a
+android.ndk = 25b
 android.enable_androidx = True
 android.accept_sdk_license = True
-p4a.branch = stable
+
+p4a.branch = master
+
 # Permissions
 android.permissions = VIBRATE,WAKE_LOCK,POST_NOTIFICATIONS
 
