@@ -169,3 +169,6 @@ warn_on_root = 1
 
 # (str) Path to build output (i.e. .apk, .aab, .ipa) storage
 # bin_dir = ./bin
+icon.filename = %(source.dir)s/data/icon.png
+presplash.filename = %(source.dir)s/data/presplash.png
+android.presplash_color = #FFFFFF
