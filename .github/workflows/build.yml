@@ -5,29 +5,41 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch:   # امکان اجرای دستی از تب Actions
+  workflow_dispatch:          # امکان اجرای دستی
 
 jobs:
   build:
     name: Build with Buildozer
     runs-on: ubuntu-latest
+    timeout-minutes: 90
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build APK with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
+      - name: Set up cache for Buildozer
+        uses: actions/cache@v4
         with:
-          command: buildozer -v android debug
-          # اگر می‌خواهید release بسازید:
-          # command: buildozer -v android release
-          buildozer_version: master   # یا stable
+          path: |
+            .buildozer
+            ~/.buildozer
+          key: buildozer-${{ hashFiles('buildozer.spec') }}-${{ runner.os }}
+          restore-keys: |
+            buildozer-${{ runner.os }}-
 
-      - name: Upload APK artifact
+      - name: Build APK using official Buildozer Docker image
+        run: |
+          docker run --rm \
+            --volume "$HOME/.buildozer":/home/user/.buildozer \
+            --volume "$PWD":/home/user/hostcwd \
+            --workdir /home/user/hostcwd \
+            ghcr.io/kivy/buildozer:latest \
+            buildozer -v android debug
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: yadavar-apk
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: bin/*.apk
           retention-days: 30
+          if-no-files-found: error
