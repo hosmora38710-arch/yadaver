@@ -11,26 +11,20 @@ jobs:
   build:
     name: Build with Buildozer
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up cache for Buildozer
-        uses: actions/cache@v4
-        with:
-          path: |
-            .buildozer
-            ~/.buildozer
-          key: buildozer-${{ hashFiles('buildozer.spec') }}-${{ runner.os }}
-          restore-keys: |
-            buildozer-${{ runner.os }}-
+      - name: Clean previous build cache
+        run: |
+          rm -rf .buildozer
+          rm -rf ~/.buildozer
 
       - name: Build APK using official Buildozer Docker image
         run: |
           docker run --rm \
-            --volume "$HOME/.buildozer":/home/user/.buildozer \
             --volume "$PWD":/home/user/hostcwd \
             --workdir /home/user/hostcwd \
             ghcr.io/kivy/buildozer:latest \
