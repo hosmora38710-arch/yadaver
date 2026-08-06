@@ -5,7 +5,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch:          # امکان اجرای دستی
+  workflow_dispatch:
 
 jobs:
   build:
@@ -34,7 +34,7 @@ jobs:
             --volume "$PWD":/home/user/hostcwd \
             --workdir /home/user/hostcwd \
             ghcr.io/kivy/buildozer:latest \
-            buildozer -v android debug
+            android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
